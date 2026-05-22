@@ -6,48 +6,76 @@
 <title>Dashboard | Marketing 7</title>
 <style>
   :root {
-    --brand: #6d28d9; --brand-2: #9333ea;
-    --ink: #1e1b2e; --muted: #6b7280; --line: #e8e6f0; --bg: #f5f3ff;
+    --bg: #07070b;
+    --surface: #101019;
+    --surface-2: #181826;
+    --line: #26263a;
+    --ink: #ececf5;
+    --muted: #8a8aa0;
+    --accent: #a855f7;
+    --accent-2: #e879f9;
+    --cyan: #22d3ee;
+    --glow: rgba(168, 85, 247, 0.5);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: -apple-system, "Segoe UI", "Helvetica Neue", "Sarabun", Tahoma, sans-serif;
-    background: #f3f1fa;
+    background:
+      radial-gradient(800px circle at 0% 0%, rgba(168, 85, 247, 0.14), transparent 50%),
+      radial-gradient(700px circle at 100% 0%, rgba(34, 211, 238, 0.08), transparent 45%),
+      var(--bg);
     color: var(--ink);
     min-height: 100vh;
   }
   header {
-    background: linear-gradient(135deg, var(--brand), var(--brand-2));
-    color: #fff;
     padding: 20px 32px;
+    border-bottom: 1px solid var(--line);
+    background: rgba(16, 16, 25, 0.7);
+    backdrop-filter: blur(8px);
     display: flex; align-items: center; justify-content: space-between;
     flex-wrap: wrap; gap: 12px;
+    position: sticky; top: 0; z-index: 10;
   }
-  header .title .tag { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; opacity: .8; }
-  header .title h1 { font-size: 20px; margin-top: 2px; }
+  header .title .tag { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent-2); }
+  header .title h1 {
+    font-size: 20px; margin-top: 2px;
+    background: linear-gradient(100deg, #fff, #c9b6ff);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  }
   header .actions { display: flex; gap: 10px; }
   header button {
     font-family: inherit; font-size: 13px; font-weight: 600;
-    padding: 9px 16px; border-radius: 9px; cursor: pointer; border: none;
+    padding: 9px 16px; border-radius: 9px; cursor: pointer; border: 1px solid var(--line);
   }
-  .btn-refresh { background: rgba(255,255,255,.18); color: #fff; }
-  .btn-logout { background: #fff; color: var(--brand); }
+  .btn-refresh { background: var(--surface-2); color: var(--ink); }
+  .btn-refresh:hover { border-color: var(--accent); }
+  .btn-logout {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: #fff; border-color: transparent;
+    box-shadow: 0 8px 22px -10px var(--glow);
+  }
   .wrap { max-width: 1080px; margin: 0 auto; padding: 26px 32px 60px; }
 
-  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 16px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px,1fr)); gap: 16px; }
   .stat {
-    background: #fff; border-radius: 16px; padding: 20px 22px;
-    box-shadow: 0 10px 30px -18px rgba(76,29,149,.4);
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 16px; padding: 20px 22px;
+    box-shadow: 0 20px 50px -30px #000;
   }
   .stat .k { font-size: 12px; color: var(--muted); font-weight: 600; }
-  .stat .v { font-size: 32px; font-weight: 800; margin-top: 6px; color: var(--brand); }
+  .stat .v {
+    font-size: 32px; font-weight: 800; margin-top: 6px;
+    background: linear-gradient(120deg, var(--accent-2), var(--cyan));
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  }
   .stat .s { font-size: 12px; color: var(--muted); margin-top: 2px; }
 
   .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 22px; }
   @media (max-width: 720px) { .grid2 { grid-template-columns: 1fr; } }
   .panel {
-    background: #fff; border-radius: 16px; padding: 22px 24px;
-    box-shadow: 0 10px 30px -18px rgba(76,29,149,.4);
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 16px; padding: 22px 24px;
+    box-shadow: 0 20px 50px -30px #000;
   }
   .panel h2 { font-size: 15px; margin-bottom: 18px; }
 
@@ -55,31 +83,41 @@
   .barrow .meta { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 5px; }
   .barrow .meta .name { font-weight: 600; }
   .barrow .meta .cnt { color: var(--muted); }
-  .track { background: var(--bg); height: 14px; border-radius: 99px; overflow: hidden; }
+  .track { background: var(--surface-2); height: 14px; border-radius: 99px; overflow: hidden; }
   .fill {
     height: 100%; border-radius: 99px;
-    background: linear-gradient(90deg, var(--brand), var(--brand-2));
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    box-shadow: 0 0 14px -2px var(--glow);
     width: 0; transition: width .5s ease;
   }
-  .fill.alt { background: linear-gradient(90deg, #0ea5e9, #6366f1); }
+  .fill.alt { background: linear-gradient(90deg, #0ea5e9, var(--cyan)); box-shadow: 0 0 14px -2px rgba(34,211,238,.5); }
 
-  .tablewrap { margin-top: 22px; background: #fff; border-radius: 16px; padding: 22px 24px;
-    box-shadow: 0 10px 30px -18px rgba(76,29,149,.4); overflow-x: auto; }
+  .tablewrap {
+    margin-top: 22px; background: var(--surface); border: 1px solid var(--line);
+    border-radius: 16px; padding: 22px 24px;
+    box-shadow: 0 20px 50px -30px #000; overflow-x: auto;
+  }
   .tablewrap h2 { font-size: 15px; margin-bottom: 16px; }
   table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
   th, td { text-align: left; padding: 11px 12px; border-bottom: 1px solid var(--line); }
   th { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
-  tbody tr:hover { background: #faf9ff; }
+  tbody tr:hover { background: var(--surface-2); }
   .pill {
     display: inline-block; padding: 3px 10px; border-radius: 99px;
-    font-size: 12px; font-weight: 600; background: var(--bg); color: var(--brand);
+    font-size: 12px; font-weight: 600;
+    background: rgba(168, 85, 247, 0.16); color: var(--accent-2);
+    border: 1px solid rgba(168, 85, 247, 0.3);
   }
-  .pill.blue { background: #e0f2fe; color: #0369a1; }
+  .pill.blue {
+    background: rgba(34, 211, 238, 0.14); color: var(--cyan);
+    border-color: rgba(34, 211, 238, 0.3);
+  }
   .del {
-    border: none; background: #fef2f2; color: #dc2626;
-    border-radius: 8px; padding: 6px 10px; cursor: pointer; font-size: 12px; font-weight: 600;
+    border: 1px solid rgba(248, 113, 113, 0.3); background: rgba(248, 113, 113, 0.1);
+    color: #f87171; border-radius: 8px; padding: 6px 10px; cursor: pointer;
+    font-size: 12px; font-weight: 600;
   }
-  .del:hover { background: #fee2e2; }
+  .del:hover { background: rgba(248, 113, 113, 0.2); }
   .empty { text-align: center; color: var(--muted); padding: 40px 0; font-size: 14px; }
 </style>
 </head>
@@ -130,7 +168,7 @@
     <table>
       <thead>
         <tr>
-          <th>#</th><th>ชื่อบริษัท</th><th>กลุ่มเป้าหมาย</th><th>กลยุทธ์</th><th>วันที่ส่ง</th><th></th>
+          <th>#</th><th>อีเมล</th><th>กลุ่มเป้าหมาย</th><th>กลยุทธ์</th><th>วันที่ส่ง</th><th></th>
         </tr>
       </thead>
       <tbody id="tbody"></tbody>
@@ -204,7 +242,7 @@
         const tr = document.createElement('tr');
         tr.innerHTML =
           '<td>' + (i+1) + '</td>' +
-          '<td><strong>' + escapeHtml(s.companyName) + '</strong></td>' +
+          '<td><strong>' + escapeHtml(s.email) + '</strong></td>' +
           '<td><span class="pill">' + (AUD_LABEL[s.audience] || s.audience) + '</span></td>' +
           '<td><span class="pill blue">' + escapeHtml(s.strategy) + '</span></td>' +
           '<td>' + fmtDate(s.createdAt) + '</td>' +

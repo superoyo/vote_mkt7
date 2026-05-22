@@ -5,50 +5,83 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>เข้าสู่ระบบหลังบ้าน | Marketing 7</title>
 <style>
-  :root { --brand: #6d28d9; --brand-2: #9333ea; --ink: #1e1b2e; --muted: #6b7280; --line: #e5e7eb; }
+  :root {
+    --bg: #07070b;
+    --surface: #101019;
+    --surface-2: #181826;
+    --line: #26263a;
+    --ink: #ececf5;
+    --muted: #8a8aa0;
+    --accent: #a855f7;
+    --accent-2: #e879f9;
+    --glow: rgba(168, 85, 247, 0.55);
+  }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: -apple-system, "Segoe UI", "Helvetica Neue", "Sarabun", Tahoma, sans-serif;
-    background: linear-gradient(160deg, #1e1b2e 0%, #3b0764 60%, #6d28d9 100%);
+    background:
+      radial-gradient(700px circle at 50% -10%, rgba(168, 85, 247, 0.22), transparent 55%),
+      radial-gradient(500px circle at 100% 100%, rgba(232, 121, 249, 0.12), transparent 50%),
+      var(--bg);
     color: var(--ink);
     min-height: 100vh;
     display: flex; align-items: center; justify-content: center;
     padding: 24px;
   }
   .card {
-    background: #fff;
+    background: var(--surface);
     width: 100%; max-width: 400px;
     border-radius: 22px;
-    box-shadow: 0 30px 70px -20px rgba(0,0,0,0.6);
+    border: 1px solid var(--line);
+    box-shadow: 0 30px 80px -30px #000, 0 0 70px -40px var(--glow);
     overflow: hidden;
   }
   .head {
-    background: linear-gradient(135deg, var(--brand), var(--brand-2));
-    color: #fff; padding: 30px 32px 26px; text-align: center;
+    padding: 32px 32px 26px; text-align: center;
+    border-bottom: 1px solid var(--line);
+    background: linear-gradient(180deg, rgba(168, 85, 247, 0.12), transparent);
   }
-  .head .icon { font-size: 34px; }
-  .head h1 { font-size: 20px; margin-top: 8px; }
-  .head p { font-size: 13px; opacity: 0.85; margin-top: 4px; }
+  .head .icon {
+    width: 56px; height: 56px; margin: 0 auto 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    border-radius: 16px;
+    box-shadow: 0 0 36px -6px var(--glow);
+  }
+  .head h1 {
+    font-size: 20px;
+    background: linear-gradient(100deg, #fff, #c9b6ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .head p { font-size: 13px; color: var(--muted); margin-top: 4px; }
   .body { padding: 28px 32px 30px; }
   label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
   input {
     width: 100%; padding: 13px 15px;
+    background: var(--surface-2);
     border: 1.5px solid var(--line); border-radius: 11px;
-    font-size: 15px; font-family: inherit; outline: none;
-    margin-bottom: 16px; transition: border-color .15s;
+    font-size: 15px; font-family: inherit; color: var(--ink); outline: none;
+    margin-bottom: 16px; transition: border-color .15s, box-shadow .15s;
   }
-  input:focus { border-color: var(--brand); }
+  input::placeholder { color: #56566c; }
+  input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.18);
+  }
   button {
     width: 100%; padding: 14px;
-    background: linear-gradient(135deg, var(--brand), var(--brand-2));
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
     color: #fff; border: none; border-radius: 11px;
     font-size: 15px; font-weight: 700; font-family: inherit;
-    cursor: pointer; box-shadow: 0 12px 24px -10px rgba(109,40,217,0.8);
+    cursor: pointer; box-shadow: 0 12px 28px -10px var(--glow);
   }
   button:active { transform: scale(0.98); }
-  .err { color: #dc2626; font-size: 13px; min-height: 18px; margin-bottom: 6px; }
+  .err { color: #f87171; font-size: 13px; min-height: 18px; margin-bottom: 6px; }
   .back { display: block; text-align: center; margin-top: 18px; font-size: 13px; color: var(--muted); text-decoration: none; }
-  .back:hover { color: var(--brand); }
+  .back:hover { color: var(--accent-2); }
 </style>
 </head>
 <body>

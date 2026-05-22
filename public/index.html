@@ -6,17 +6,23 @@
 <title>แบบสอบถามกลยุทธ์การตลาด | Marketing 7</title>
 <style>
   :root {
-    --brand: #6d28d9;
-    --brand-2: #9333ea;
-    --ink: #1e1b2e;
-    --muted: #6b7280;
-    --line: #e5e7eb;
-    --bg: #f5f3ff;
+    --bg: #07070b;
+    --surface: #101019;
+    --surface-2: #181826;
+    --line: #26263a;
+    --ink: #ececf5;
+    --muted: #8a8aa0;
+    --accent: #a855f7;
+    --accent-2: #e879f9;
+    --glow: rgba(168, 85, 247, 0.55);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: -apple-system, "Segoe UI", "Helvetica Neue", "Sarabun", Tahoma, sans-serif;
-    background: linear-gradient(160deg, #ede9fe 0%, #faf5ff 45%, #fdf4ff 100%);
+    background:
+      radial-gradient(700px circle at 12% 0%, rgba(168, 85, 247, 0.18), transparent 55%),
+      radial-gradient(600px circle at 100% 100%, rgba(232, 121, 249, 0.14), transparent 50%),
+      var(--bg);
     color: var(--ink);
     min-height: 100vh;
     display: flex;
@@ -25,36 +31,45 @@
     padding: 24px;
   }
   .card {
-    background: #fff;
+    background: var(--surface);
     width: 100%;
     max-width: 560px;
     border-radius: 22px;
-    box-shadow: 0 24px 60px -20px rgba(109, 40, 217, 0.35);
+    border: 1px solid var(--line);
+    box-shadow: 0 30px 80px -30px #000, 0 0 70px -40px var(--glow);
     overflow: hidden;
   }
   .head {
-    background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%);
-    color: #fff;
-    padding: 26px 32px 22px;
+    padding: 28px 32px 22px;
+    border-bottom: 1px solid var(--line);
+    background: linear-gradient(180deg, rgba(168, 85, 247, 0.1), transparent);
   }
   .head .tag {
-    font-size: 12px;
-    letter-spacing: 2px;
+    font-size: 11px;
+    letter-spacing: 3px;
     text-transform: uppercase;
-    opacity: 0.85;
+    color: var(--accent-2);
   }
-  .head h1 { font-size: 20px; margin-top: 4px; font-weight: 700; }
-  .progress-wrap { padding: 0 32px; margin-top: 20px; }
+  .head h1 {
+    font-size: 20px;
+    margin-top: 6px;
+    font-weight: 700;
+    background: linear-gradient(100deg, #fff, #c9b6ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .progress-wrap { padding: 20px 32px 0; }
   .progress-meta {
     display: flex;
     justify-content: space-between;
     font-size: 12px;
     color: var(--muted);
-    margin-bottom: 6px;
+    margin-bottom: 7px;
   }
   .progress {
-    height: 7px;
-    background: var(--line);
+    height: 6px;
+    background: var(--surface-2);
     border-radius: 99px;
     overflow: hidden;
   }
@@ -62,8 +77,9 @@
     display: block;
     height: 100%;
     width: 0;
-    background: linear-gradient(90deg, var(--brand), var(--brand-2));
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
     border-radius: 99px;
+    box-shadow: 0 0 12px var(--glow);
     transition: width .35s ease;
   }
   .body { padding: 26px 32px 8px; }
@@ -72,53 +88,60 @@
   @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
   .q-label { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
   .q-hint { font-size: 13px; color: var(--muted); margin-bottom: 18px; }
-  input[type=text] {
+  input[type=email] {
     width: 100%;
     padding: 14px 16px;
+    background: var(--surface-2);
     border: 1.5px solid var(--line);
     border-radius: 12px;
     font-size: 15px;
     font-family: inherit;
+    color: var(--ink);
     outline: none;
-    transition: border-color .15s;
+    transition: border-color .15s, box-shadow .15s;
   }
-  input[type=text]:focus { border-color: var(--brand); }
+  input[type=email]::placeholder { color: #56566c; }
+  input[type=email]:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.18);
+  }
   .options { display: flex; flex-direction: column; gap: 10px; }
   .opt {
     display: flex;
     align-items: center;
     gap: 12px;
+    background: var(--surface-2);
     border: 1.5px solid var(--line);
     border-radius: 12px;
     padding: 14px 16px;
     cursor: pointer;
     transition: all .15s;
   }
-  .opt:hover { border-color: #c4b5fd; background: #faf5ff; }
+  .opt:hover { border-color: #4a3a6e; }
   .opt.selected {
-    border-color: var(--brand);
-    background: var(--bg);
-    box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.1);
+    border-color: var(--accent);
+    background: rgba(168, 85, 247, 0.12);
+    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.14), 0 0 24px -8px var(--glow);
   }
   .opt input { display: none; }
   .dot {
     width: 20px; height: 20px;
-    border: 2px solid #cbd5e1;
+    border: 2px solid #44445c;
     border-radius: 50%;
     flex-shrink: 0;
     position: relative;
   }
-  .opt.selected .dot { border-color: var(--brand); }
+  .opt.selected .dot { border-color: var(--accent); }
   .opt.selected .dot::after {
     content: "";
     position: absolute;
     inset: 3px;
-    background: var(--brand);
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
     border-radius: 50%;
   }
   .opt-text strong { display: block; font-size: 15px; }
   .opt-text small { color: var(--muted); font-size: 12px; }
-  .err { color: #dc2626; font-size: 13px; margin-top: 10px; min-height: 18px; }
+  .err { color: #f87171; font-size: 13px; margin-top: 10px; min-height: 18px; }
   .foot {
     display: flex;
     justify-content: space-between;
@@ -137,26 +160,29 @@
   }
   button:active { transform: scale(0.97); }
   .btn-back {
-    background: #f3f4f6;
+    background: var(--surface-2);
     color: var(--ink);
+    border: 1px solid var(--line);
   }
-  .btn-back:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-back:disabled { opacity: 0.35; cursor: not-allowed; }
   .btn-next {
-    background: linear-gradient(135deg, var(--brand), var(--brand-2));
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
     color: #fff;
-    box-shadow: 0 10px 20px -8px rgba(109, 40, 217, 0.7);
+    box-shadow: 0 10px 28px -10px var(--glow);
     margin-left: auto;
   }
+  .btn-next:disabled { opacity: 0.6; cursor: not-allowed; }
   /* หน้าขอบคุณ */
-  .done { text-align: center; padding: 30px 32px 36px; display: none; }
+  .done { text-align: center; padding: 32px 32px 36px; display: none; }
   .done.active { display: block; animation: fade .4s ease; }
   .done .check {
     width: 76px; height: 76px;
     margin: 0 auto 18px;
-    background: linear-gradient(135deg, #22c55e, #16a34a);
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     color: #fff; font-size: 38px;
+    box-shadow: 0 0 40px -6px var(--glow);
   }
   .done h2 { font-size: 21px; margin-bottom: 8px; }
   .done p { color: var(--muted); font-size: 14px; margin-bottom: 22px; }
@@ -166,7 +192,8 @@
     font-size: 12px;
     color: var(--muted);
   }
-  .admin-link a { color: var(--brand); text-decoration: none; }
+  .admin-link a { color: var(--accent-2); text-decoration: none; }
+  .admin-link a:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
@@ -188,9 +215,9 @@
     <div class="body">
       <!-- ข้อ 1 -->
       <div class="step active" data-step="0">
-        <div class="q-label">ชื่อบริษัท</div>
-        <div class="q-hint">กรอกชื่อบริษัทหรือชื่อแบรนด์ของคุณ</div>
-        <input type="text" id="companyName" name="companyName" placeholder="เช่น Marketing 7 Co., Ltd." />
+        <div class="q-label">อีเมล</div>
+        <div class="q-hint">กรอกอีเมลของคุณเพื่อใช้ติดต่อกลับ</div>
+        <input type="email" id="email" name="email" placeholder="you@example.com" />
         <div class="err" id="err0"></div>
       </div>
 
@@ -244,12 +271,12 @@
     { value: 'Selling Approach',   label: 'Selling Approach',   desc: 'เน้นเทคนิคและวิธีการปิดการขาย' },
     { value: 'Customer Experience',label: 'Customer Experience',desc: 'มอบประสบการณ์ที่ดีให้ลูกค้า' }
   ];
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  const answers = { companyName: '', audience: '', strategy: '' };
+  const answers = { email: '', audience: '', strategy: '' };
   let current = 0;
   const TOTAL = 3;
 
-  // สร้างตัวเลือกแบบ radio
   function buildOptions(containerId, items, key) {
     const wrap = document.getElementById(containerId);
     items.forEach(it => {
@@ -289,9 +316,13 @@
 
   function validate() {
     if (current === 0) {
-      answers.companyName = document.getElementById('companyName').value.trim();
-      if (!answers.companyName) {
-        document.getElementById('err0').textContent = 'กรุณากรอกชื่อบริษัท';
+      answers.email = document.getElementById('email').value.trim();
+      if (!answers.email) {
+        document.getElementById('err0').textContent = 'กรุณากรอกอีเมล';
+        return false;
+      }
+      if (!EMAIL_RE.test(answers.email)) {
+        document.getElementById('err0').textContent = 'รูปแบบอีเมลไม่ถูกต้อง';
         return false;
       }
     }

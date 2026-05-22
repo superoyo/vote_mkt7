@@ -31,6 +31,7 @@ function writeSubmissions(list) {
 // --- ตัวเลือกที่ถูกต้อง (ใช้ตรวจสอบฝั่ง server) ---
 const AUDIENCES = ['GenX', 'GenY', 'GenZ', 'GenAlpha', 'GenBeta'];
 const STRATEGIES = ['ValueProposition', 'Brand Storytelling', 'Selling Approach', 'Customer Experience'];
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -52,9 +53,9 @@ function requireAuth(req, res, next) {
 
 // --- API: บันทึกแบบสอบถาม ---
 app.post('/api/submit', (req, res) => {
-  const { companyName, audience, strategy } = req.body || {};
-  if (!companyName || typeof companyName !== 'string' || !companyName.trim()) {
-    return res.status(400).json({ ok: false, error: 'กรุณากรอกชื่อบริษัท' });
+  const { email, audience, strategy } = req.body || {};
+  if (!email || typeof email !== 'string' || !EMAIL_RE.test(email.trim())) {
+    return res.status(400).json({ ok: false, error: 'กรุณากรอกอีเมลให้ถูกต้อง' });
   }
   if (!AUDIENCES.includes(audience)) {
     return res.status(400).json({ ok: false, error: 'กรุณาเลือกกลุ่มเป้าหมาย' });
@@ -65,7 +66,7 @@ app.post('/api/submit', (req, res) => {
   const list = readSubmissions();
   const entry = {
     id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
-    companyName: companyName.trim().slice(0, 200),
+    email: email.trim().toLowerCase().slice(0, 200),
     audience,
     strategy,
     createdAt: new Date().toISOString()
