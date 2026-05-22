@@ -6,24 +6,24 @@
 <title>แบบสอบถามกลยุทธ์การตลาด | Marketing 7</title>
 <style>
   :root {
-    --bg: #07070b;
-    --surface: #13131d;
-    --surface-2: #1c1c2b;
-    --line: #2a2a3d;
-    --ink: #f4f4fb;
-    --muted: #8a8aa0;
-    --accent: #a855f7;
-    --accent-2: #e879f9;
-    --cyan: #22d3ee;
-    --glow: rgba(168, 85, 247, 0.5);
+    --bg: #0a0a0a;
+    --surface: #161616;
+    --surface-2: #202020;
+    --line: #333333;
+    --ink: #ffffff;
+    --muted: #8f8f8f;
+    --accent: #ffe600;
+    --accent-2: #ffc400;
+    --ink-on-accent: #0a0a0a;
+    --glow: rgba(255, 230, 0, 0.38);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { height: 100%; }
   body {
     font-family: -apple-system, "Segoe UI", "Helvetica Neue", "Sarabun", Tahoma, sans-serif;
     background:
-      radial-gradient(900px circle at 12% 0%, rgba(168, 85, 247, 0.16), transparent 55%),
-      radial-gradient(800px circle at 100% 100%, rgba(232, 121, 249, 0.12), transparent 50%),
+      radial-gradient(900px circle at 12% 0%, rgba(255, 230, 0, 0.10), transparent 55%),
+      radial-gradient(800px circle at 100% 100%, rgba(255, 196, 0, 0.07), transparent 50%),
       var(--bg);
     color: var(--ink);
     overflow: hidden;
@@ -45,7 +45,7 @@
   .brand {
     position: fixed; top: 22px; left: 28px; z-index: 20;
     font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
-    color: var(--accent-2); font-weight: 600;
+    color: var(--accent); font-weight: 700;
   }
 
   /* พื้นที่คำถาม */
@@ -63,7 +63,7 @@
 
   .qnum {
     display: inline-flex; align-items: center; gap: 6px;
-    color: var(--accent-2); font-size: 14px; font-weight: 700;
+    color: var(--accent); font-size: 14px; font-weight: 700;
     margin-bottom: 16px;
   }
   .qnum .arrow { font-size: 13px; opacity: .7; }
@@ -78,7 +78,7 @@
     padding: 8px 2px; outline: none;
     transition: border-color .2s;
   }
-  .text-field::placeholder { color: #3d3d52; }
+  .text-field::placeholder { color: #4a4a4a; }
   .text-field:focus { border-color: var(--accent); }
 
   /* ตัวเลือก */
@@ -93,12 +93,12 @@
     cursor: pointer; color: var(--ink); font-family: inherit;
     transition: border-color .15s, background .15s, box-shadow .15s, transform .08s;
   }
-  .choice:hover { border-color: #4a3a6e; background: var(--surface-2); }
+  .choice:hover { border-color: #555555; background: var(--surface-2); }
   .choice:active { transform: scale(.992); }
   .choice.selected {
     border-color: var(--accent);
-    background: rgba(168, 85, 247, 0.13);
-    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.14), 0 0 28px -8px var(--glow);
+    background: rgba(255, 230, 0, 0.10);
+    box-shadow: 0 0 0 3px rgba(255, 230, 0, 0.14), 0 0 28px -8px var(--glow);
   }
   .choice .key {
     width: 30px; height: 30px; flex-shrink: 0;
@@ -107,15 +107,15 @@
     font-size: 13px; font-weight: 700; color: var(--muted);
     transition: all .15s;
   }
-  .choice:hover .key { border-color: #4a3a6e; }
+  .choice:hover .key { border-color: #555555; }
   .choice.selected .key {
     background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    border-color: transparent; color: #fff;
+    border-color: transparent; color: var(--ink-on-accent);
   }
   .choice-text strong { display: block; font-size: 15.5px; }
   .choice-text small { color: var(--muted); font-size: 12.5px; }
   .choice .tick {
-    margin-left: auto; color: var(--accent-2); font-weight: 700; font-size: 16px;
+    margin-left: auto; color: var(--accent); font-weight: 700; font-size: 16px;
     opacity: 0; transform: scale(.4);
     transition: opacity .15s, transform .15s;
   }
@@ -127,7 +127,7 @@
     font-size: 66px; font-weight: 800; line-height: 1; margin-bottom: 22px;
   }
   .slider-value span {
-    background: linear-gradient(120deg, var(--accent-2), var(--cyan));
+    background: linear-gradient(120deg, #ffe600, #ffffff);
     -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
   }
   .slider-value em { font-size: 22px; font-style: normal; color: var(--muted); }
@@ -143,14 +143,14 @@
   .slider::-webkit-slider-thumb {
     -webkit-appearance: none; appearance: none;
     width: 30px; height: 30px; margin-top: -8px;
-    border-radius: 50%; background: #fff;
+    border-radius: 50%; background: #ffffff;
     border: 4px solid var(--accent);
     box-shadow: 0 0 18px var(--glow), 0 3px 8px rgba(0,0,0,.6);
     cursor: pointer;
   }
   .slider::-moz-range-track { height: 14px; border-radius: 99px; background: transparent; }
   .slider::-moz-range-thumb {
-    width: 26px; height: 26px; border-radius: 50%; background: #fff;
+    width: 26px; height: 26px; border-radius: 50%; background: #ffffff;
     border: 4px solid var(--accent);
     box-shadow: 0 0 18px var(--glow); cursor: pointer;
   }
@@ -165,7 +165,7 @@
   .btn-ok {
     display: inline-flex; align-items: center; gap: 8px;
     background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    color: #fff; border: none; border-radius: 11px;
+    color: var(--ink-on-accent); border: none; border-radius: 11px;
     font-size: 15px; font-weight: 700; font-family: inherit;
     padding: 13px 26px; cursor: pointer;
     box-shadow: 0 12px 28px -10px var(--glow);
@@ -174,7 +174,7 @@
   .btn-ok:active { transform: scale(.97); }
   .btn-ok:disabled { opacity: .6; cursor: default; }
   .btn-ok .chk {
-    font-size: 11px; background: rgba(255,255,255,.22);
+    font-size: 11px; background: rgba(0,0,0,.2);
     width: 18px; height: 18px; border-radius: 5px;
     display: flex; align-items: center; justify-content: center;
   }
@@ -197,7 +197,7 @@
   }
   .nav button:first-child { border-radius: 10px 0 0 10px; }
   .nav button:last-child { border-radius: 0 10px 10px 0; border-left: none; }
-  .nav button:hover:not(:disabled) { border-color: var(--accent); color: var(--accent-2); }
+  .nav button:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
   .nav button:disabled { opacity: .3; cursor: not-allowed; }
 
   /* ลิงค์มุมล่าง */
@@ -205,7 +205,7 @@
     position: fixed; left: 28px; bottom: 30px; z-index: 20;
     font-size: 12px; color: var(--muted);
   }
-  .foot-links a { color: var(--accent-2); text-decoration: none; }
+  .foot-links a { color: var(--accent); text-decoration: none; }
   .foot-links a:hover { text-decoration: underline; }
 
   /* หน้าขอบคุณ */
@@ -214,7 +214,7 @@
     display: none; align-items: center; justify-content: center;
     padding: 50px 28px;
     background:
-      radial-gradient(900px circle at 50% 0%, rgba(168, 85, 247, 0.18), transparent 55%),
+      radial-gradient(900px circle at 50% 0%, rgba(255, 230, 0, 0.12), transparent 55%),
       var(--bg);
   }
   .done.active { display: flex; animation: fade .45s ease; }
@@ -225,7 +225,7 @@
     background: linear-gradient(135deg, var(--accent), var(--accent-2));
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    color: #fff; font-size: 40px;
+    color: var(--ink-on-accent); font-size: 40px;
     box-shadow: 0 0 46px -6px var(--glow);
   }
   .done h2 { font-size: 24px; margin-bottom: 8px; }
@@ -240,7 +240,7 @@
     display: inline-flex; align-items: center; gap: 8px;
     text-decoration: none;
     background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    color: #fff; font-weight: 700; font-size: 15px; font-family: inherit;
+    color: var(--ink-on-accent); font-weight: 700; font-size: 15px; font-family: inherit;
     padding: 13px 26px; border-radius: 12px;
     box-shadow: 0 12px 28px -10px var(--glow);
     transition: transform .1s;
@@ -251,7 +251,7 @@
     background: transparent; color: var(--muted);
     border: none; font-size: 13px; font-family: inherit; cursor: pointer;
   }
-  .btn-restart:hover { color: var(--accent-2); }
+  .btn-restart:hover { color: var(--accent); }
 
   @media (max-width: 560px) {
     .qtitle { font-size: 23px; }
@@ -436,8 +436,8 @@
       valEl.textContent = slider.value;
       const pct = ((slider.value - 1) / 9) * 100;
       slider.style.background =
-        'linear-gradient(to right, #a855f7 0%, #e879f9 ' + pct + '%, ' +
-        '#1c1c2b ' + pct + '%, #1c1c2b 100%)';
+        'linear-gradient(to right, #ffe600 0%, #ffc400 ' + pct + '%, ' +
+        '#202020 ' + pct + '%, #202020 100%)';
     }
     slider.addEventListener('input', update);
     update();

@@ -6,22 +6,23 @@
 <title>เข้าสู่ระบบหลังบ้าน | Marketing 7</title>
 <style>
   :root {
-    --bg: #07070b;
-    --surface: #101019;
-    --surface-2: #181826;
-    --line: #26263a;
-    --ink: #ececf5;
-    --muted: #8a8aa0;
-    --accent: #a855f7;
-    --accent-2: #e879f9;
-    --glow: rgba(168, 85, 247, 0.55);
+    --bg: #0a0a0a;
+    --surface: #161616;
+    --surface-2: #202020;
+    --line: #333333;
+    --ink: #ffffff;
+    --muted: #8f8f8f;
+    --accent: #ffe600;
+    --accent-2: #ffc400;
+    --ink-on-accent: #0a0a0a;
+    --glow: rgba(255, 230, 0, 0.4);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: -apple-system, "Segoe UI", "Helvetica Neue", "Sarabun", Tahoma, sans-serif;
     background:
-      radial-gradient(700px circle at 50% -10%, rgba(168, 85, 247, 0.22), transparent 55%),
-      radial-gradient(500px circle at 100% 100%, rgba(232, 121, 249, 0.12), transparent 50%),
+      radial-gradient(700px circle at 50% -10%, rgba(255, 230, 0, 0.14), transparent 55%),
+      radial-gradient(500px circle at 100% 100%, rgba(255, 196, 0, 0.08), transparent 50%),
       var(--bg);
     color: var(--ink);
     min-height: 100vh;
@@ -39,7 +40,7 @@
   .head {
     padding: 32px 32px 26px; text-align: center;
     border-bottom: 1px solid var(--line);
-    background: linear-gradient(180deg, rgba(168, 85, 247, 0.12), transparent);
+    background: linear-gradient(180deg, rgba(255, 230, 0, 0.10), transparent);
   }
   .head .icon {
     width: 56px; height: 56px; margin: 0 auto 12px;
@@ -51,7 +52,7 @@
   }
   .head h1 {
     font-size: 20px;
-    background: linear-gradient(100deg, #fff, #c9b6ff);
+    background: linear-gradient(100deg, #ffffff, #ffe600);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -66,22 +67,22 @@
     font-size: 15px; font-family: inherit; color: var(--ink); outline: none;
     margin-bottom: 16px; transition: border-color .15s, box-shadow .15s;
   }
-  input::placeholder { color: #56566c; }
+  input::placeholder { color: #555555; }
   input:focus {
     border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.18);
+    box-shadow: 0 0 0 3px rgba(255, 230, 0, 0.16);
   }
   button {
     width: 100%; padding: 14px;
     background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    color: #fff; border: none; border-radius: 11px;
+    color: var(--ink-on-accent); border: none; border-radius: 11px;
     font-size: 15px; font-weight: 700; font-family: inherit;
     cursor: pointer; box-shadow: 0 12px 28px -10px var(--glow);
   }
   button:active { transform: scale(0.98); }
   .err { color: #f87171; font-size: 13px; min-height: 18px; margin-bottom: 6px; }
   .back { display: block; text-align: center; margin-top: 18px; font-size: 13px; color: var(--muted); text-decoration: none; }
-  .back:hover { color: var(--accent-2); }
+  .back:hover { color: var(--accent); }
 </style>
 </head>
 <body>
