@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>เข้าสู่ระบบหลังบ้าน | Marketing 7</title>
+<style>
+  :root { --brand: #6d28d9; --brand-2: #9333ea; --ink: #1e1b2e; --muted: #6b7280; --line: #e5e7eb; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", "Helvetica Neue", "Sarabun", Tahoma, sans-serif;
+    background: linear-gradient(160deg, #1e1b2e 0%, #3b0764 60%, #6d28d9 100%);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+  }
+  .card {
+    background: #fff;
+    width: 100%; max-width: 400px;
+    border-radius: 22px;
+    box-shadow: 0 30px 70px -20px rgba(0,0,0,0.6);
+    overflow: hidden;
+  }
+  .head {
+    background: linear-gradient(135deg, var(--brand), var(--brand-2));
+    color: #fff; padding: 30px 32px 26px; text-align: center;
+  }
+  .head .icon { font-size: 34px; }
+  .head h1 { font-size: 20px; margin-top: 8px; }
+  .head p { font-size: 13px; opacity: 0.85; margin-top: 4px; }
+  .body { padding: 28px 32px 30px; }
+  label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+  input {
+    width: 100%; padding: 13px 15px;
+    border: 1.5px solid var(--line); border-radius: 11px;
+    font-size: 15px; font-family: inherit; outline: none;
+    margin-bottom: 16px; transition: border-color .15s;
+  }
+  input:focus { border-color: var(--brand); }
+  button {
+    width: 100%; padding: 14px;
+    background: linear-gradient(135deg, var(--brand), var(--brand-2));
+    color: #fff; border: none; border-radius: 11px;
+    font-size: 15px; font-weight: 700; font-family: inherit;
+    cursor: pointer; box-shadow: 0 12px 24px -10px rgba(109,40,217,0.8);
+  }
+  button:active { transform: scale(0.98); }
+  .err { color: #dc2626; font-size: 13px; min-height: 18px; margin-bottom: 6px; }
+  .back { display: block; text-align: center; margin-top: 18px; font-size: 13px; color: var(--muted); text-decoration: none; }
+  .back:hover { color: var(--brand); }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="head">
+    <div class="icon">&#128274;</div>
+    <h1>ระบบหลังบ้าน</h1>
+    <p>เข้าสู่ระบบเพื่อดูผลแบบสอบถาม</p>
+  </div>
+  <div class="body">
+    <form id="form">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" placeholder="admin" autocomplete="username" />
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="••••••" autocomplete="current-password" />
+      <div class="err" id="err"></div>
+      <button type="submit">เข้าสู่ระบบ</button>
+    </form>
+    <a class="back" href="/">&larr; กลับไปหน้าแบบสอบถาม</a>
+  </div>
+</div>
+<script>
+  document.getElementById('form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const err = document.getElementById('err');
+    err.textContent = '';
+    try {
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: document.getElementById('username').value,
+          password: document.getElementById('password').value
+        })
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok) throw new Error(data.error || 'เข้าสู่ระบบไม่สำเร็จ');
+      location.href = '/dashboard';
+    } catch (ex) {
+      err.textContent = ex.message;
+    }
+  });
+</script>
+</body>
+</html>

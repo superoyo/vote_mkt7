@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>แบบสอบถามกลยุทธ์การตลาด | Marketing 7</title>
+<style>
+  :root {
+    --brand: #6d28d9;
+    --brand-2: #9333ea;
+    --ink: #1e1b2e;
+    --muted: #6b7280;
+    --line: #e5e7eb;
+    --bg: #f5f3ff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", "Helvetica Neue", "Sarabun", Tahoma, sans-serif;
+    background: linear-gradient(160deg, #ede9fe 0%, #faf5ff 45%, #fdf4ff 100%);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .card {
+    background: #fff;
+    width: 100%;
+    max-width: 560px;
+    border-radius: 22px;
+    box-shadow: 0 24px 60px -20px rgba(109, 40, 217, 0.35);
+    overflow: hidden;
+  }
+  .head {
+    background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%);
+    color: #fff;
+    padding: 26px 32px 22px;
+  }
+  .head .tag {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.85;
+  }
+  .head h1 { font-size: 20px; margin-top: 4px; font-weight: 700; }
+  .progress-wrap { padding: 0 32px; margin-top: 20px; }
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .progress {
+    height: 7px;
+    background: var(--line);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .progress > span {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, var(--brand), var(--brand-2));
+    border-radius: 99px;
+    transition: width .35s ease;
+  }
+  .body { padding: 26px 32px 8px; }
+  .step { display: none; animation: fade .35s ease; }
+  .step.active { display: block; }
+  @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .q-label { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+  .q-hint { font-size: 13px; color: var(--muted); margin-bottom: 18px; }
+  input[type=text] {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1.5px solid var(--line);
+    border-radius: 12px;
+    font-size: 15px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color .15s;
+  }
+  input[type=text]:focus { border-color: var(--brand); }
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .opt {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 1.5px solid var(--line);
+    border-radius: 12px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .opt:hover { border-color: #c4b5fd; background: #faf5ff; }
+  .opt.selected {
+    border-color: var(--brand);
+    background: var(--bg);
+    box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.1);
+  }
+  .opt input { display: none; }
+  .dot {
+    width: 20px; height: 20px;
+    border: 2px solid #cbd5e1;
+    border-radius: 50%;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .opt.selected .dot { border-color: var(--brand); }
+  .opt.selected .dot::after {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    background: var(--brand);
+    border-radius: 50%;
+  }
+  .opt-text strong { display: block; font-size: 15px; }
+  .opt-text small { color: var(--muted); font-size: 12px; }
+  .err { color: #dc2626; font-size: 13px; margin-top: 10px; min-height: 18px; }
+  .foot {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 32px 28px;
+  }
+  button {
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 12px;
+    padding: 13px 26px;
+    cursor: pointer;
+    border: none;
+    transition: transform .1s, box-shadow .15s, opacity .15s;
+  }
+  button:active { transform: scale(0.97); }
+  .btn-back {
+    background: #f3f4f6;
+    color: var(--ink);
+  }
+  .btn-back:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-next {
+    background: linear-gradient(135deg, var(--brand), var(--brand-2));
+    color: #fff;
+    box-shadow: 0 10px 20px -8px rgba(109, 40, 217, 0.7);
+    margin-left: auto;
+  }
+  /* หน้าขอบคุณ */
+  .done { text-align: center; padding: 30px 32px 36px; display: none; }
+  .done.active { display: block; animation: fade .4s ease; }
+  .done .check {
+    width: 76px; height: 76px;
+    margin: 0 auto 18px;
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 38px;
+  }
+  .done h2 { font-size: 21px; margin-bottom: 8px; }
+  .done p { color: var(--muted); font-size: 14px; margin-bottom: 22px; }
+  .admin-link {
+    text-align: center;
+    padding: 0 32px 22px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .admin-link a { color: var(--brand); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="head">
+    <div class="tag">Marketing 7 · Survey</div>
+    <h1>แบบสอบถามกลยุทธ์การตลาดของแบรนด์</h1>
+  </div>
+
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-meta">
+      <span id="stepLabel">ข้อ 1 จาก 3</span>
+      <span id="stepPct">33%</span>
+    </div>
+    <div class="progress"><span id="bar"></span></div>
+  </div>
+
+  <form id="form" autocomplete="off">
+    <div class="body">
+      <!-- ข้อ 1 -->
+      <div class="step active" data-step="0">
+        <div class="q-label">ชื่อบริษัท</div>
+        <div class="q-hint">กรอกชื่อบริษัทหรือชื่อแบรนด์ของคุณ</div>
+        <input type="text" id="companyName" name="companyName" placeholder="เช่น Marketing 7 Co., Ltd." />
+        <div class="err" id="err0"></div>
+      </div>
+
+      <!-- ข้อ 2 -->
+      <div class="step" data-step="1">
+        <div class="q-label">กลุ่มเป้าหมายของแบรนด์</div>
+        <div class="q-hint">เลือกช่วงวัยของลูกค้าหลักที่แบรนด์ต้องการเข้าถึง</div>
+        <div class="options" id="audienceOpts"></div>
+        <div class="err" id="err1"></div>
+      </div>
+
+      <!-- ข้อ 3 -->
+      <div class="step" data-step="2">
+        <div class="q-label">กลยุทธ์แบบไหนที่เหมาะกับลูกค้าของคุณ</div>
+        <div class="q-hint">เลือกแนวทางที่คิดว่าตอบโจทย์ลูกค้ามากที่สุด</div>
+        <div class="options" id="strategyOpts"></div>
+        <div class="err" id="err2"></div>
+      </div>
+    </div>
+
+    <div class="foot" id="foot">
+      <button type="button" class="btn-back" id="btnBack" disabled>ย้อนกลับ</button>
+      <button type="button" class="btn-next" id="btnNext">ถัดไป</button>
+    </div>
+  </form>
+
+  <!-- หน้าขอบคุณ -->
+  <div class="done" id="done">
+    <div class="check">&#10003;</div>
+    <h2>ส่งแบบสอบถามเรียบร้อย</h2>
+    <p>ขอบคุณที่ร่วมตอบแบบสอบถาม ข้อมูลของคุณถูกบันทึกในระบบแล้ว</p>
+    <button type="button" class="btn-next" id="btnRestart" style="margin:0 auto;">ทำแบบสอบถามอีกครั้ง</button>
+  </div>
+
+  <div class="admin-link">
+    สำหรับผู้ดูแลระบบ · <a href="/login">เข้าสู่ระบบหลังบ้าน</a>
+  </div>
+</div>
+
+<script>
+  const AUDIENCES = [
+    { value: 'GenX',     label: 'Gen X',     desc: 'เกิดราว 1965–1980' },
+    { value: 'GenY',     label: 'Gen Y',     desc: 'เกิดราว 1981–1996 (Millennials)' },
+    { value: 'GenZ',     label: 'Gen Z',     desc: 'เกิดราว 1997–2012' },
+    { value: 'GenAlpha', label: 'Gen Alpha', desc: 'เกิดราว 2013–2024' },
+    { value: 'GenBeta',  label: 'Gen Beta',  desc: 'เกิดราว 2025 เป็นต้นไป' }
+  ];
+  const STRATEGIES = [
+    { value: 'ValueProposition',   label: 'Value Proposition',  desc: 'สื่อสารจุดเด่นและคุณค่าของสินค้า' },
+    { value: 'Brand Storytelling', label: 'Brand Storytelling', desc: 'สร้างการจดจำผ่านเรื่องราวของแบรนด์' },
+    { value: 'Selling Approach',   label: 'Selling Approach',   desc: 'เน้นเทคนิคและวิธีการปิดการขาย' },
+    { value: 'Customer Experience',label: 'Customer Experience',desc: 'มอบประสบการณ์ที่ดีให้ลูกค้า' }
+  ];
+
+  const answers = { companyName: '', audience: '', strategy: '' };
+  let current = 0;
+  const TOTAL = 3;
+
+  // สร้างตัวเลือกแบบ radio
+  function buildOptions(containerId, items, key) {
+    const wrap = document.getElementById(containerId);
+    items.forEach(it => {
+      const el = document.createElement('label');
+      el.className = 'opt';
+      el.innerHTML =
+        '<span class="dot"></span>' +
+        '<span class="opt-text"><strong>' + it.label + '</strong><small>' + it.desc + '</small></span>';
+      el.addEventListener('click', () => {
+        answers[key] = it.value;
+        wrap.querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
+        el.classList.add('selected');
+        document.getElementById('err' + (key === 'audience' ? 1 : 2)).textContent = '';
+      });
+      wrap.appendChild(el);
+    });
+  }
+  buildOptions('audienceOpts', AUDIENCES, 'audience');
+  buildOptions('strategyOpts', STRATEGIES, 'strategy');
+
+  const steps = document.querySelectorAll('.step');
+  const bar = document.getElementById('bar');
+  const stepLabel = document.getElementById('stepLabel');
+  const stepPct = document.getElementById('stepPct');
+  const btnBack = document.getElementById('btnBack');
+  const btnNext = document.getElementById('btnNext');
+
+  function render() {
+    steps.forEach(s => s.classList.toggle('active', +s.dataset.step === current));
+    const pct = Math.round(((current + 1) / TOTAL) * 100);
+    bar.style.width = pct + '%';
+    stepLabel.textContent = 'ข้อ ' + (current + 1) + ' จาก ' + TOTAL;
+    stepPct.textContent = pct + '%';
+    btnBack.disabled = current === 0;
+    btnNext.textContent = current === TOTAL - 1 ? 'ส่งแบบสอบถาม' : 'ถัดไป';
+  }
+
+  function validate() {
+    if (current === 0) {
+      answers.companyName = document.getElementById('companyName').value.trim();
+      if (!answers.companyName) {
+        document.getElementById('err0').textContent = 'กรุณากรอกชื่อบริษัท';
+        return false;
+      }
+    }
+    if (current === 1 && !answers.audience) {
+      document.getElementById('err1').textContent = 'กรุณาเลือกกลุ่มเป้าหมาย';
+      return false;
+    }
+    if (current === 2 && !answers.strategy) {
+      document.getElementById('err2').textContent = 'กรุณาเลือกกลยุทธ์';
+      return false;
+    }
+    return true;
+  }
+
+  btnBack.addEventListener('click', () => {
+    if (current > 0) { current--; render(); }
+  });
+
+  btnNext.addEventListener('click', async () => {
+    if (!validate()) return;
+    if (current < TOTAL - 1) {
+      current++;
+      render();
+    } else {
+      await submit();
+    }
+  });
+
+  async function submit() {
+    btnNext.disabled = true;
+    btnNext.textContent = 'กำลังส่ง...';
+    try {
+      const res = await fetch('/api/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(answers)
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok) throw new Error(data.error || 'ส่งข้อมูลไม่สำเร็จ');
+      document.getElementById('form').style.display = 'none';
+      document.getElementById('progressWrap').style.display = 'none';
+      document.getElementById('done').classList.add('active');
+    } catch (e) {
+      document.getElementById('err2').textContent = e.message;
+      btnNext.disabled = false;
+      btnNext.textContent = 'ส่งแบบสอบถาม';
+    }
+  }
+
+  document.getElementById('btnRestart').addEventListener('click', () => location.reload());
+
+  render();
+</script>
+</body>
+</html>

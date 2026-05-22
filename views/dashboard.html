@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dashboard | Marketing 7</title>
+<style>
+  :root {
+    --brand: #6d28d9; --brand-2: #9333ea;
+    --ink: #1e1b2e; --muted: #6b7280; --line: #e8e6f0; --bg: #f5f3ff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", "Helvetica Neue", "Sarabun", Tahoma, sans-serif;
+    background: #f3f1fa;
+    color: var(--ink);
+    min-height: 100vh;
+  }
+  header {
+    background: linear-gradient(135deg, var(--brand), var(--brand-2));
+    color: #fff;
+    padding: 20px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 12px;
+  }
+  header .title .tag { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; opacity: .8; }
+  header .title h1 { font-size: 20px; margin-top: 2px; }
+  header .actions { display: flex; gap: 10px; }
+  header button {
+    font-family: inherit; font-size: 13px; font-weight: 600;
+    padding: 9px 16px; border-radius: 9px; cursor: pointer; border: none;
+  }
+  .btn-refresh { background: rgba(255,255,255,.18); color: #fff; }
+  .btn-logout { background: #fff; color: var(--brand); }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 26px 32px 60px; }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 16px; }
+  .stat {
+    background: #fff; border-radius: 16px; padding: 20px 22px;
+    box-shadow: 0 10px 30px -18px rgba(76,29,149,.4);
+  }
+  .stat .k { font-size: 12px; color: var(--muted); font-weight: 600; }
+  .stat .v { font-size: 32px; font-weight: 800; margin-top: 6px; color: var(--brand); }
+  .stat .s { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 22px; }
+  @media (max-width: 720px) { .grid2 { grid-template-columns: 1fr; } }
+  .panel {
+    background: #fff; border-radius: 16px; padding: 22px 24px;
+    box-shadow: 0 10px 30px -18px rgba(76,29,149,.4);
+  }
+  .panel h2 { font-size: 15px; margin-bottom: 18px; }
+
+  .barrow { margin-bottom: 14px; }
+  .barrow .meta { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 5px; }
+  .barrow .meta .name { font-weight: 600; }
+  .barrow .meta .cnt { color: var(--muted); }
+  .track { background: var(--bg); height: 14px; border-radius: 99px; overflow: hidden; }
+  .fill {
+    height: 100%; border-radius: 99px;
+    background: linear-gradient(90deg, var(--brand), var(--brand-2));
+    width: 0; transition: width .5s ease;
+  }
+  .fill.alt { background: linear-gradient(90deg, #0ea5e9, #6366f1); }
+
+  .tablewrap { margin-top: 22px; background: #fff; border-radius: 16px; padding: 22px 24px;
+    box-shadow: 0 10px 30px -18px rgba(76,29,149,.4); overflow-x: auto; }
+  .tablewrap h2 { font-size: 15px; margin-bottom: 16px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th, td { text-align: left; padding: 11px 12px; border-bottom: 1px solid var(--line); }
+  th { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+  tbody tr:hover { background: #faf9ff; }
+  .pill {
+    display: inline-block; padding: 3px 10px; border-radius: 99px;
+    font-size: 12px; font-weight: 600; background: var(--bg); color: var(--brand);
+  }
+  .pill.blue { background: #e0f2fe; color: #0369a1; }
+  .del {
+    border: none; background: #fef2f2; color: #dc2626;
+    border-radius: 8px; padding: 6px 10px; cursor: pointer; font-size: 12px; font-weight: 600;
+  }
+  .del:hover { background: #fee2e2; }
+  .empty { text-align: center; color: var(--muted); padding: 40px 0; font-size: 14px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="title">
+    <div class="tag">Marketing 7 · Backend</div>
+    <h1>Dashboard ผลแบบสอบถาม</h1>
+  </div>
+  <div class="actions">
+    <button class="btn-refresh" id="btnRefresh">รีเฟรช</button>
+    <button class="btn-logout" id="btnLogout">ออกจากระบบ</button>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="cards">
+    <div class="stat">
+      <div class="k">จำนวนผู้ตอบทั้งหมด</div>
+      <div class="v" id="cTotal">0</div>
+      <div class="s">รายการ</div>
+    </div>
+    <div class="stat">
+      <div class="k">กลุ่มเป้าหมายยอดนิยม</div>
+      <div class="v" id="cTopAud" style="font-size:24px;">–</div>
+      <div class="s" id="cTopAudS">ยังไม่มีข้อมูล</div>
+    </div>
+    <div class="stat">
+      <div class="k">กลยุทธ์ยอดนิยม</div>
+      <div class="v" id="cTopStr" style="font-size:24px;">–</div>
+      <div class="s" id="cTopStrS">ยังไม่มีข้อมูล</div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h2>จำแนกตามกลุ่มเป้าหมาย</h2>
+      <div id="audChart"></div>
+    </div>
+    <div class="panel">
+      <h2>จำแนกตามกลยุทธ์</h2>
+      <div id="strChart"></div>
+    </div>
+  </div>
+
+  <div class="tablewrap">
+    <h2>รายการคำตอบทั้งหมด</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th><th>ชื่อบริษัท</th><th>กลุ่มเป้าหมาย</th><th>กลยุทธ์</th><th>วันที่ส่ง</th><th></th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <div class="empty" id="empty" style="display:none;">ยังไม่มีคำตอบในระบบ</div>
+  </div>
+</div>
+
+<script>
+  const AUD_LABEL = { GenX:'Gen X', GenY:'Gen Y', GenZ:'Gen Z', GenAlpha:'Gen Alpha', GenBeta:'Gen Beta' };
+
+  function fmtDate(iso) {
+    const d = new Date(iso);
+    return d.toLocaleString('th-TH', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+  }
+
+  function renderBars(containerId, dataObj, labelMap, alt) {
+    const wrap = document.getElementById(containerId);
+    wrap.innerHTML = '';
+    const entries = Object.entries(dataObj);
+    const max = Math.max(1, ...entries.map(([,v]) => v));
+    const total = entries.reduce((a,[,v]) => a+v, 0);
+    entries.forEach(([k,v]) => {
+      const pct = total ? Math.round((v/total)*100) : 0;
+      const row = document.createElement('div');
+      row.className = 'barrow';
+      row.innerHTML =
+        '<div class="meta"><span class="name">' + (labelMap[k] || k) + '</span>' +
+        '<span class="cnt">' + v + ' คน · ' + pct + '%</span></div>' +
+        '<div class="track"><div class="fill' + (alt ? ' alt' : '') + '"></div></div>';
+      wrap.appendChild(row);
+      requestAnimationFrame(() => {
+        row.querySelector('.fill').style.width = ((v/max)*100) + '%';
+      });
+    });
+  }
+
+  function topOf(obj, labelMap) {
+    let best = null, bestV = -1;
+    Object.entries(obj).forEach(([k,v]) => { if (v > bestV) { bestV = v; best = k; } });
+    if (bestV <= 0) return null;
+    return { key: labelMap ? (labelMap[best] || best) : best, value: bestV };
+  }
+
+  async function load() {
+    const res = await fetch('/api/results');
+    if (res.status === 401) { location.href = '/login'; return; }
+    const data = await res.json();
+
+    document.getElementById('cTotal').textContent = data.total;
+
+    const topA = topOf(data.byAudience, AUD_LABEL);
+    document.getElementById('cTopAud').textContent = topA ? topA.key : '–';
+    document.getElementById('cTopAudS').textContent = topA ? (topA.value + ' คน') : 'ยังไม่มีข้อมูล';
+
+    const topS = topOf(data.byStrategy, null);
+    document.getElementById('cTopStr').textContent = topS ? topS.key : '–';
+    document.getElementById('cTopStrS').textContent = topS ? (topS.value + ' คน') : 'ยังไม่มีข้อมูล';
+
+    renderBars('audChart', data.byAudience, AUD_LABEL, false);
+    renderBars('strChart', data.byStrategy, {}, true);
+
+    const tbody = document.getElementById('tbody');
+    const empty = document.getElementById('empty');
+    tbody.innerHTML = '';
+    if (!data.submissions.length) {
+      empty.style.display = 'block';
+    } else {
+      empty.style.display = 'none';
+      data.submissions.forEach((s, i) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML =
+          '<td>' + (i+1) + '</td>' +
+          '<td><strong>' + escapeHtml(s.companyName) + '</strong></td>' +
+          '<td><span class="pill">' + (AUD_LABEL[s.audience] || s.audience) + '</span></td>' +
+          '<td><span class="pill blue">' + escapeHtml(s.strategy) + '</span></td>' +
+          '<td>' + fmtDate(s.createdAt) + '</td>' +
+          '<td><button class="del" data-id="' + s.id + '">ลบ</button></td>';
+        tbody.appendChild(tr);
+      });
+      tbody.querySelectorAll('.del').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          if (!confirm('ต้องการลบรายการนี้?')) return;
+          await fetch('/api/results/' + btn.dataset.id, { method: 'DELETE' });
+          load();
+        });
+      });
+    }
+  }
+
+  function escapeHtml(str) {
+    return String(str).replace(/[&<>"']/g, c => (
+      { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]
+    ));
+  }
+
+  document.getElementById('btnRefresh').addEventListener('click', load);
+  document.getElementById('btnLogout').addEventListener('click', async () => {
+    await fetch('/api/logout', { method: 'POST' });
+    location.href = '/login';
+  });
+
+  load();
+</script>
+</body>
+</html>
