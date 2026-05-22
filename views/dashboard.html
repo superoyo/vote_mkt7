@@ -15,6 +15,7 @@
     --accent: #a855f7;
     --accent-2: #e879f9;
     --cyan: #22d3ee;
+    --live: #34d399;
     --glow: rgba(168, 85, 247, 0.5);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -42,33 +43,52 @@
     background: linear-gradient(100deg, #fff, #c9b6ff);
     -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
   }
-  header .actions { display: flex; gap: 10px; }
-  header button {
-    font-family: inherit; font-size: 13px; font-weight: 600;
-    padding: 9px 16px; border-radius: 9px; cursor: pointer; border: 1px solid var(--line);
+  header .actions { display: flex; align-items: center; gap: 14px; }
+  .live {
+    display: flex; align-items: center; gap: 7px;
+    font-size: 12px; color: var(--muted);
   }
-  .btn-refresh { background: var(--surface-2); color: var(--ink); }
-  .btn-refresh:hover { border-color: var(--accent); }
+  .live .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--live);
+    box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.6);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.55); }
+    70%  { box-shadow: 0 0 0 8px rgba(52, 211, 153, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+  }
   .btn-logout {
+    font-family: inherit; font-size: 13px; font-weight: 600;
+    padding: 9px 16px; border-radius: 9px; cursor: pointer; border: none;
     background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    color: #fff; border-color: transparent;
-    box-shadow: 0 8px 22px -10px var(--glow);
+    color: #fff; box-shadow: 0 8px 22px -10px var(--glow);
   }
+  .btn-logout:active { transform: scale(0.97); }
   .wrap { max-width: 1080px; margin: 0 auto; padding: 26px 32px 60px; }
 
-  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px,1fr)); gap: 16px; }
-  .stat {
+  /* การ์ดจำนวนคนตอบ */
+  .hero {
     background: var(--surface); border: 1px solid var(--line);
-    border-radius: 16px; padding: 20px 22px;
-    box-shadow: 0 20px 50px -30px #000;
+    border-radius: 18px; padding: 30px 32px;
+    box-shadow: 0 20px 50px -30px #000, 0 0 60px -40px var(--glow);
+    display: flex; align-items: center; gap: 26px; flex-wrap: wrap;
   }
-  .stat .k { font-size: 12px; color: var(--muted); font-weight: 600; }
-  .stat .v {
-    font-size: 32px; font-weight: 800; margin-top: 6px;
+  .hero .icon {
+    width: 64px; height: 64px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 30px; border-radius: 18px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    box-shadow: 0 0 38px -6px var(--glow);
+  }
+  .hero .meta .k { font-size: 13px; color: var(--muted); font-weight: 600; }
+  .hero .meta .v {
+    font-size: 52px; font-weight: 800; line-height: 1.05; margin-top: 2px;
     background: linear-gradient(120deg, var(--accent-2), var(--cyan));
     -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
   }
-  .stat .s { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .hero .meta .s { font-size: 13px; color: var(--muted); }
 
   .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 22px; }
   @media (max-width: 720px) { .grid2 { grid-template-columns: 1fr; } }
@@ -80,6 +100,7 @@
   .panel h2 { font-size: 15px; margin-bottom: 18px; }
 
   .barrow { margin-bottom: 14px; }
+  .barrow:last-child { margin-bottom: 0; }
   .barrow .meta { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 5px; }
   .barrow .meta .name { font-weight: 600; }
   .barrow .meta .cnt { color: var(--muted); }
@@ -91,34 +112,6 @@
     width: 0; transition: width .5s ease;
   }
   .fill.alt { background: linear-gradient(90deg, #0ea5e9, var(--cyan)); box-shadow: 0 0 14px -2px rgba(34,211,238,.5); }
-
-  .tablewrap {
-    margin-top: 22px; background: var(--surface); border: 1px solid var(--line);
-    border-radius: 16px; padding: 22px 24px;
-    box-shadow: 0 20px 50px -30px #000; overflow-x: auto;
-  }
-  .tablewrap h2 { font-size: 15px; margin-bottom: 16px; }
-  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
-  th, td { text-align: left; padding: 11px 12px; border-bottom: 1px solid var(--line); }
-  th { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
-  tbody tr:hover { background: var(--surface-2); }
-  .pill {
-    display: inline-block; padding: 3px 10px; border-radius: 99px;
-    font-size: 12px; font-weight: 600;
-    background: rgba(168, 85, 247, 0.16); color: var(--accent-2);
-    border: 1px solid rgba(168, 85, 247, 0.3);
-  }
-  .pill.blue {
-    background: rgba(34, 211, 238, 0.14); color: var(--cyan);
-    border-color: rgba(34, 211, 238, 0.3);
-  }
-  .del {
-    border: 1px solid rgba(248, 113, 113, 0.3); background: rgba(248, 113, 113, 0.1);
-    color: #f87171; border-radius: 8px; padding: 6px 10px; cursor: pointer;
-    font-size: 12px; font-weight: 600;
-  }
-  .del:hover { background: rgba(248, 113, 113, 0.2); }
-  .empty { text-align: center; color: var(--muted); padding: 40px 0; font-size: 14px; }
 </style>
 </head>
 <body>
@@ -128,27 +121,18 @@
     <h1>Dashboard ผลแบบสอบถาม</h1>
   </div>
   <div class="actions">
-    <button class="btn-refresh" id="btnRefresh">รีเฟรช</button>
+    <div class="live"><span class="dot"></span><span id="liveText">กำลังเชื่อมต่อ...</span></div>
     <button class="btn-logout" id="btnLogout">ออกจากระบบ</button>
   </div>
 </header>
 
 <div class="wrap">
-  <div class="cards">
-    <div class="stat">
-      <div class="k">จำนวนผู้ตอบทั้งหมด</div>
+  <div class="hero">
+    <div class="icon">&#128101;</div>
+    <div class="meta">
+      <div class="k">จำนวนคนตอบทั้งหมด</div>
       <div class="v" id="cTotal">0</div>
       <div class="s">รายการ</div>
-    </div>
-    <div class="stat">
-      <div class="k">กลุ่มเป้าหมายยอดนิยม</div>
-      <div class="v" id="cTopAud" style="font-size:24px;">–</div>
-      <div class="s" id="cTopAudS">ยังไม่มีข้อมูล</div>
-    </div>
-    <div class="stat">
-      <div class="k">กลยุทธ์ยอดนิยม</div>
-      <div class="v" id="cTopStr" style="font-size:24px;">–</div>
-      <div class="s" id="cTopStrS">ยังไม่มีข้อมูล</div>
     </div>
   </div>
 
@@ -162,28 +146,12 @@
       <div id="strChart"></div>
     </div>
   </div>
-
-  <div class="tablewrap">
-    <h2>รายการคำตอบทั้งหมด</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>#</th><th>อีเมล</th><th>กลุ่มเป้าหมาย</th><th>กลยุทธ์</th><th>วันที่ส่ง</th><th></th>
-        </tr>
-      </thead>
-      <tbody id="tbody"></tbody>
-    </table>
-    <div class="empty" id="empty" style="display:none;">ยังไม่มีคำตอบในระบบ</div>
-  </div>
 </div>
 
 <script>
   const AUD_LABEL = { GenX:'Gen X', GenY:'Gen Y', GenZ:'Gen Z', GenAlpha:'Gen Alpha', GenBeta:'Gen Beta' };
-
-  function fmtDate(iso) {
-    const d = new Date(iso);
-    return d.toLocaleString('th-TH', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
-  }
+  const REFRESH_MS = 5000;
+  let lastSig = null;
 
   function renderBars(containerId, dataObj, labelMap, alt) {
     const wrap = document.getElementById(containerId);
@@ -206,72 +174,39 @@
     });
   }
 
-  function topOf(obj, labelMap) {
-    let best = null, bestV = -1;
-    Object.entries(obj).forEach(([k,v]) => { if (v > bestV) { bestV = v; best = k; } });
-    if (bestV <= 0) return null;
-    return { key: labelMap ? (labelMap[best] || best) : best, value: bestV };
+  function setLiveText() {
+    const t = new Date().toLocaleTimeString('th-TH', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+    document.getElementById('liveText').textContent = 'อัปเดตอัตโนมัติ · ล่าสุด ' + t;
   }
 
   async function load() {
-    const res = await fetch('/api/results');
-    if (res.status === 401) { location.href = '/login'; return; }
-    const data = await res.json();
+    let data;
+    try {
+      const res = await fetch('/api/results');
+      if (res.status === 401) { location.href = '/login'; return; }
+      data = await res.json();
+    } catch (e) {
+      document.getElementById('liveText').textContent = 'เชื่อมต่อไม่ได้ · กำลังลองใหม่';
+      return;
+    }
+    setLiveText();
+    const sig = JSON.stringify(data);
+    if (sig === lastSig) return;   // ข้อมูลไม่เปลี่ยน ไม่ต้องวาดใหม่ (กันกราฟกระพริบ)
+    lastSig = sig;
 
     document.getElementById('cTotal').textContent = data.total;
-
-    const topA = topOf(data.byAudience, AUD_LABEL);
-    document.getElementById('cTopAud').textContent = topA ? topA.key : '–';
-    document.getElementById('cTopAudS').textContent = topA ? (topA.value + ' คน') : 'ยังไม่มีข้อมูล';
-
-    const topS = topOf(data.byStrategy, null);
-    document.getElementById('cTopStr').textContent = topS ? topS.key : '–';
-    document.getElementById('cTopStrS').textContent = topS ? (topS.value + ' คน') : 'ยังไม่มีข้อมูล';
-
     renderBars('audChart', data.byAudience, AUD_LABEL, false);
     renderBars('strChart', data.byStrategy, {}, true);
-
-    const tbody = document.getElementById('tbody');
-    const empty = document.getElementById('empty');
-    tbody.innerHTML = '';
-    if (!data.submissions.length) {
-      empty.style.display = 'block';
-    } else {
-      empty.style.display = 'none';
-      data.submissions.forEach((s, i) => {
-        const tr = document.createElement('tr');
-        tr.innerHTML =
-          '<td>' + (i+1) + '</td>' +
-          '<td><strong>' + escapeHtml(s.email) + '</strong></td>' +
-          '<td><span class="pill">' + (AUD_LABEL[s.audience] || s.audience) + '</span></td>' +
-          '<td><span class="pill blue">' + escapeHtml(s.strategy) + '</span></td>' +
-          '<td>' + fmtDate(s.createdAt) + '</td>' +
-          '<td><button class="del" data-id="' + s.id + '">ลบ</button></td>';
-        tbody.appendChild(tr);
-      });
-      tbody.querySelectorAll('.del').forEach(btn => {
-        btn.addEventListener('click', async () => {
-          if (!confirm('ต้องการลบรายการนี้?')) return;
-          await fetch('/api/results/' + btn.dataset.id, { method: 'DELETE' });
-          load();
-        });
-      });
-    }
   }
 
-  function escapeHtml(str) {
-    return String(str).replace(/[&<>"']/g, c => (
-      { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]
-    ));
-  }
-
-  document.getElementById('btnRefresh').addEventListener('click', load);
   document.getElementById('btnLogout').addEventListener('click', async () => {
     await fetch('/api/logout', { method: 'POST' });
     location.href = '/login';
   });
 
   load();
+  setInterval(() => { if (!document.hidden) load(); }, REFRESH_MS);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) load(); });
 </script>
 </body>
 </html>

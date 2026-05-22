@@ -7,253 +7,288 @@
 <style>
   :root {
     --bg: #07070b;
-    --surface: #101019;
-    --surface-2: #181826;
-    --line: #26263a;
-    --ink: #ececf5;
+    --surface: #13131d;
+    --surface-2: #1c1c2b;
+    --line: #2a2a3d;
+    --ink: #f4f4fb;
     --muted: #8a8aa0;
     --accent: #a855f7;
     --accent-2: #e879f9;
-    --glow: rgba(168, 85, 247, 0.55);
+    --glow: rgba(168, 85, 247, 0.5);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
   body {
     font-family: -apple-system, "Segoe UI", "Helvetica Neue", "Sarabun", Tahoma, sans-serif;
     background:
-      radial-gradient(700px circle at 12% 0%, rgba(168, 85, 247, 0.18), transparent 55%),
-      radial-gradient(600px circle at 100% 100%, rgba(232, 121, 249, 0.14), transparent 50%),
+      radial-gradient(900px circle at 12% 0%, rgba(168, 85, 247, 0.16), transparent 55%),
+      radial-gradient(800px circle at 100% 100%, rgba(232, 121, 249, 0.12), transparent 50%),
       var(--bg);
     color: var(--ink);
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-  }
-  .card {
-    background: var(--surface);
-    width: 100%;
-    max-width: 560px;
-    border-radius: 22px;
-    border: 1px solid var(--line);
-    box-shadow: 0 30px 80px -30px #000, 0 0 70px -40px var(--glow);
     overflow: hidden;
   }
-  .head {
-    padding: 28px 32px 22px;
-    border-bottom: 1px solid var(--line);
-    background: linear-gradient(180deg, rgba(168, 85, 247, 0.1), transparent);
-  }
-  .head .tag {
-    font-size: 11px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--accent-2);
-  }
-  .head h1 {
-    font-size: 20px;
-    margin-top: 6px;
-    font-weight: 700;
-    background: linear-gradient(100deg, #fff, #c9b6ff);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  .progress-wrap { padding: 20px 32px 0; }
-  .progress-meta {
-    display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    color: var(--muted);
-    margin-bottom: 7px;
-  }
+
+  /* แถบความคืบหน้า */
   .progress {
-    height: 6px;
-    background: var(--surface-2);
-    border-radius: 99px;
-    overflow: hidden;
+    position: fixed; top: 0; left: 0; right: 0;
+    height: 5px; background: var(--surface-2); z-index: 30;
   }
   .progress > span {
-    display: block;
-    height: 100%;
-    width: 0;
+    display: block; height: 100%; width: 0;
     background: linear-gradient(90deg, var(--accent), var(--accent-2));
-    border-radius: 99px;
     box-shadow: 0 0 12px var(--glow);
-    transition: width .35s ease;
+    transition: width .45s cubic-bezier(.2,.8,.2,1);
   }
-  .body { padding: 26px 32px 8px; }
-  .step { display: none; animation: fade .35s ease; }
-  .step.active { display: block; }
-  @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-  .q-label { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
-  .q-hint { font-size: 13px; color: var(--muted); margin-bottom: 18px; }
-  input[type=email] {
-    width: 100%;
-    padding: 14px 16px;
-    background: var(--surface-2);
+
+  /* แบรนด์มุมบน */
+  .brand {
+    position: fixed; top: 22px; left: 28px; z-index: 20;
+    font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--accent-2); font-weight: 600;
+  }
+
+  /* พื้นที่คำถาม */
+  main { position: relative; height: 100%; }
+  .step {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    padding: 90px 28px;
+    opacity: 0; transform: translateY(26px);
+    pointer-events: none;
+    transition: opacity .42s ease, transform .42s cubic-bezier(.2,.8,.2,1);
+  }
+  .step.active { opacity: 1; transform: none; pointer-events: auto; }
+  .step-inner { width: 100%; max-width: 620px; }
+
+  .qnum {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--accent-2); font-size: 14px; font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .qnum .arrow { font-size: 13px; opacity: .7; }
+  .qtitle { font-size: 31px; font-weight: 600; line-height: 1.32; margin-bottom: 8px; }
+  .qhint { font-size: 15px; color: var(--muted); margin-bottom: 28px; }
+
+  /* ช่องกรอกข้อความ */
+  .text-field {
+    width: 100%; background: transparent;
+    border: none; border-bottom: 2px solid var(--line);
+    color: var(--ink); font-size: 28px; font-family: inherit;
+    padding: 8px 2px; outline: none;
+    transition: border-color .2s;
+  }
+  .text-field::placeholder { color: #3d3d52; }
+  .text-field:focus { border-color: var(--accent); }
+
+  /* ตัวเลือก */
+  .choices { display: flex; flex-direction: column; gap: 11px; }
+  .choice {
+    display: flex; align-items: center; gap: 14px;
+    width: 100%; text-align: left;
+    background: var(--surface);
     border: 1.5px solid var(--line);
-    border-radius: 12px;
-    font-size: 15px;
-    font-family: inherit;
-    color: var(--ink);
-    outline: none;
-    transition: border-color .15s, box-shadow .15s;
+    border-radius: 13px;
+    padding: 15px 17px;
+    cursor: pointer; color: var(--ink); font-family: inherit;
+    transition: border-color .15s, background .15s, box-shadow .15s, transform .08s;
   }
-  input[type=email]::placeholder { color: #56566c; }
-  input[type=email]:focus {
+  .choice:hover { border-color: #4a3a6e; background: var(--surface-2); }
+  .choice:active { transform: scale(.992); }
+  .choice.selected {
     border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.18);
+    background: rgba(168, 85, 247, 0.13);
+    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.14), 0 0 28px -8px var(--glow);
   }
-  .options { display: flex; flex-direction: column; gap: 10px; }
-  .opt {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: var(--surface-2);
-    border: 1.5px solid var(--line);
-    border-radius: 12px;
-    padding: 14px 16px;
-    cursor: pointer;
+  .choice .key {
+    width: 30px; height: 30px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    border: 1.5px solid var(--line); border-radius: 8px;
+    font-size: 13px; font-weight: 700; color: var(--muted);
     transition: all .15s;
   }
-  .opt:hover { border-color: #4a3a6e; }
-  .opt.selected {
-    border-color: var(--accent);
-    background: rgba(168, 85, 247, 0.12);
-    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.14), 0 0 24px -8px var(--glow);
-  }
-  .opt input { display: none; }
-  .dot {
-    width: 20px; height: 20px;
-    border: 2px solid #44445c;
-    border-radius: 50%;
-    flex-shrink: 0;
-    position: relative;
-  }
-  .opt.selected .dot { border-color: var(--accent); }
-  .opt.selected .dot::after {
-    content: "";
-    position: absolute;
-    inset: 3px;
+  .choice:hover .key { border-color: #4a3a6e; }
+  .choice.selected .key {
     background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    border-radius: 50%;
+    border-color: transparent; color: #fff;
   }
-  .opt-text strong { display: block; font-size: 15px; }
-  .opt-text small { color: var(--muted); font-size: 12px; }
-  .err { color: #f87171; font-size: 13px; margin-top: 10px; min-height: 18px; }
-  .foot {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 16px 32px 28px;
+  .choice-text strong { display: block; font-size: 15.5px; }
+  .choice-text small { color: var(--muted); font-size: 12.5px; }
+  .choice .tick {
+    margin-left: auto; color: var(--accent-2); font-weight: 700; font-size: 16px;
+    opacity: 0; transform: scale(.4);
+    transition: opacity .15s, transform .15s;
   }
-  button {
-    font-family: inherit;
-    font-size: 15px;
-    font-weight: 600;
-    border-radius: 12px;
-    padding: 13px 26px;
-    cursor: pointer;
-    border: none;
-    transition: transform .1s, box-shadow .15s, opacity .15s;
-  }
-  button:active { transform: scale(0.97); }
-  .btn-back {
-    background: var(--surface-2);
-    color: var(--ink);
-    border: 1px solid var(--line);
-  }
-  .btn-back:disabled { opacity: 0.35; cursor: not-allowed; }
-  .btn-next {
+  .choice.selected .tick { opacity: 1; transform: none; }
+
+  /* ปุ่ม OK */
+  .actions { display: flex; align-items: center; gap: 14px; margin-top: 28px; }
+  .btn-ok {
+    display: inline-flex; align-items: center; gap: 8px;
     background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    color: #fff;
-    box-shadow: 0 10px 28px -10px var(--glow);
-    margin-left: auto;
+    color: #fff; border: none; border-radius: 11px;
+    font-size: 15px; font-weight: 700; font-family: inherit;
+    padding: 13px 26px; cursor: pointer;
+    box-shadow: 0 12px 28px -10px var(--glow);
+    transition: transform .1s, opacity .15s;
   }
-  .btn-next:disabled { opacity: 0.6; cursor: not-allowed; }
+  .btn-ok:active { transform: scale(.97); }
+  .btn-ok:disabled { opacity: .6; cursor: default; }
+  .btn-ok .chk {
+    font-size: 11px; background: rgba(255,255,255,.22);
+    width: 18px; height: 18px; border-radius: 5px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .enter-hint { font-size: 12.5px; color: var(--muted); }
+  .enter-hint kbd {
+    background: var(--surface-2); border: 1px solid var(--line);
+    border-radius: 5px; padding: 2px 6px; font-family: inherit;
+    font-size: 11.5px; color: var(--ink);
+  }
+  .err { color: #f87171; font-size: 13.5px; margin-top: 14px; min-height: 18px; }
+
+  /* ปุ่มเลื่อน */
+  .nav { position: fixed; right: 24px; bottom: 24px; z-index: 20; display: flex; }
+  .nav button {
+    width: 44px; height: 42px;
+    background: var(--surface); border: 1px solid var(--line);
+    color: var(--ink); cursor: pointer; font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .15s;
+  }
+  .nav button:first-child { border-radius: 10px 0 0 10px; }
+  .nav button:last-child { border-radius: 0 10px 10px 0; border-left: none; }
+  .nav button:hover:not(:disabled) { border-color: var(--accent); color: var(--accent-2); }
+  .nav button:disabled { opacity: .3; cursor: not-allowed; }
+
+  /* ลิงค์มุมล่าง */
+  .foot-links {
+    position: fixed; left: 28px; bottom: 30px; z-index: 20;
+    font-size: 12px; color: var(--muted);
+  }
+  .foot-links a { color: var(--accent-2); text-decoration: none; }
+  .foot-links a:hover { text-decoration: underline; }
+
   /* หน้าขอบคุณ */
-  .done { text-align: center; padding: 32px 32px 36px; display: none; }
-  .done.active { display: block; animation: fade .4s ease; }
+  .done {
+    position: fixed; inset: 0; z-index: 40;
+    display: none; align-items: center; justify-content: center;
+    padding: 50px 28px;
+    background:
+      radial-gradient(900px circle at 50% 0%, rgba(168, 85, 247, 0.18), transparent 55%),
+      var(--bg);
+  }
+  .done.active { display: flex; animation: fade .45s ease; }
+  @keyframes fade { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  .done-inner { max-width: 440px; width: 100%; text-align: center; }
   .done .check {
-    width: 76px; height: 76px;
-    margin: 0 auto 18px;
+    width: 82px; height: 82px; margin: 0 auto 20px;
     background: linear-gradient(135deg, var(--accent), var(--accent-2));
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    color: #fff; font-size: 38px;
-    box-shadow: 0 0 40px -6px var(--glow);
+    color: #fff; font-size: 40px;
+    box-shadow: 0 0 46px -6px var(--glow);
   }
-  .done h2 { font-size: 21px; margin-bottom: 8px; }
-  .done p { color: var(--muted); font-size: 14px; margin-bottom: 22px; }
-  .admin-link {
-    text-align: center;
-    padding: 0 32px 22px;
-    font-size: 12px;
-    color: var(--muted);
+  .done h2 { font-size: 24px; margin-bottom: 8px; }
+  .done > .done-inner > p { color: var(--muted); font-size: 14.5px; margin-bottom: 24px; }
+  .gift {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 16px; padding: 22px;
   }
-  .admin-link a { color: var(--accent-2); text-decoration: none; }
-  .admin-link a:hover { text-decoration: underline; }
+  .gift .gift-title { font-size: 14.5px; font-weight: 700; margin-bottom: 3px; }
+  .gift .gift-sub { font-size: 12.5px; color: var(--muted); margin-bottom: 16px; }
+  .btn-download {
+    display: inline-flex; align-items: center; gap: 8px;
+    text-decoration: none;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: #fff; font-weight: 700; font-size: 15px; font-family: inherit;
+    padding: 13px 26px; border-radius: 12px;
+    box-shadow: 0 12px 28px -10px var(--glow);
+    transition: transform .1s;
+  }
+  .btn-download:active { transform: scale(.97); }
+  .btn-restart {
+    display: block; margin: 18px auto 0;
+    background: transparent; color: var(--muted);
+    border: none; font-size: 13px; font-family: inherit; cursor: pointer;
+  }
+  .btn-restart:hover { color: var(--accent-2); }
+
+  @media (max-width: 560px) {
+    .qtitle { font-size: 23px; }
+    .text-field { font-size: 22px; }
+    .step { padding: 84px 22px; }
+    .brand { left: 20px; }
+    .foot-links { left: 20px; }
+  }
 </style>
 </head>
 <body>
-<div class="card">
-  <div class="head">
-    <div class="tag">Marketing 7 · Survey</div>
-    <h1>แบบสอบถามกลยุทธ์การตลาดของแบรนด์</h1>
-  </div>
 
-  <div class="progress-wrap" id="progressWrap">
-    <div class="progress-meta">
-      <span id="stepLabel">ข้อ 1 จาก 3</span>
-      <span id="stepPct">33%</span>
-    </div>
-    <div class="progress"><span id="bar"></span></div>
-  </div>
+<div class="progress"><span id="bar"></span></div>
+<div class="brand">Marketing 7 · Survey</div>
 
-  <form id="form" autocomplete="off">
-    <div class="body">
-      <!-- ข้อ 1 -->
-      <div class="step active" data-step="0">
-        <div class="q-label">อีเมล</div>
-        <div class="q-hint">กรอกอีเมลของคุณเพื่อใช้ติดต่อกลับ</div>
-        <input type="email" id="email" name="email" placeholder="you@example.com" />
-        <div class="err" id="err0"></div>
+<main id="main">
+  <!-- ข้อ 1 : อีเมล -->
+  <section class="step active" data-step="0">
+    <div class="step-inner">
+      <div class="qnum">1 <span class="arrow">&rarr;</span> อีเมล</div>
+      <h1 class="qtitle">อีเมลของคุณคืออะไร?</h1>
+      <p class="qhint">เราจะใช้อีเมลนี้สำหรับติดต่อกลับ</p>
+      <input type="email" id="email" class="text-field" placeholder="you@example.com" />
+      <div class="actions">
+        <button type="button" class="btn-ok" id="okBtn">OK <span class="chk">&#10003;</span></button>
+        <span class="enter-hint">หรือกด <kbd>Enter &crarr;</kbd></span>
       </div>
-
-      <!-- ข้อ 2 -->
-      <div class="step" data-step="1">
-        <div class="q-label">กลุ่มเป้าหมายของแบรนด์</div>
-        <div class="q-hint">เลือกช่วงวัยของลูกค้าหลักที่แบรนด์ต้องการเข้าถึง</div>
-        <div class="options" id="audienceOpts"></div>
-        <div class="err" id="err1"></div>
-      </div>
-
-      <!-- ข้อ 3 -->
-      <div class="step" data-step="2">
-        <div class="q-label">กลยุทธ์แบบไหนที่เหมาะกับลูกค้าของคุณ</div>
-        <div class="q-hint">เลือกแนวทางที่คิดว่าตอบโจทย์ลูกค้ามากที่สุด</div>
-        <div class="options" id="strategyOpts"></div>
-        <div class="err" id="err2"></div>
-      </div>
+      <div class="err" id="err0"></div>
     </div>
+  </section>
 
-    <div class="foot" id="foot">
-      <button type="button" class="btn-back" id="btnBack" disabled>ย้อนกลับ</button>
-      <button type="button" class="btn-next" id="btnNext">ถัดไป</button>
+  <!-- ข้อ 2 : กลุ่มเป้าหมาย -->
+  <section class="step" data-step="1">
+    <div class="step-inner">
+      <div class="qnum">2 <span class="arrow">&rarr;</span> กลุ่มเป้าหมาย</div>
+      <h1 class="qtitle">กลุ่มเป้าหมายของแบรนด์คือใคร?</h1>
+      <p class="qhint">เลือกช่วงวัยของลูกค้าหลัก &middot; กดปุ่ม A–E ได้</p>
+      <div class="choices" id="audienceOpts"></div>
+      <div class="err" id="err1"></div>
     </div>
-  </form>
+  </section>
 
-  <!-- หน้าขอบคุณ -->
-  <div class="done" id="done">
+  <!-- ข้อ 3 : กลยุทธ์ -->
+  <section class="step" data-step="2">
+    <div class="step-inner">
+      <div class="qnum">3 <span class="arrow">&rarr;</span> กลยุทธ์</div>
+      <h1 class="qtitle">กลยุทธ์แบบไหนที่เหมาะกับลูกค้าของคุณ?</h1>
+      <p class="qhint">เลือกแนวทางที่ตอบโจทย์ที่สุด &middot; กดปุ่ม A–D ได้</p>
+      <div class="choices" id="strategyOpts"></div>
+      <div class="err" id="err2"></div>
+    </div>
+  </section>
+</main>
+
+<div class="nav">
+  <button type="button" id="navPrev" title="ย้อนกลับ" disabled>&uarr;</button>
+  <button type="button" id="navNext" title="ถัดไป">&darr;</button>
+</div>
+
+<div class="foot-links">
+  <a href="/login">ระบบหลังบ้าน</a> &middot; <a href="/dashboard">Dashboard</a>
+</div>
+
+<!-- หน้าขอบคุณ -->
+<div class="done" id="done">
+  <div class="done-inner">
     <div class="check">&#10003;</div>
     <h2>ส่งแบบสอบถามเรียบร้อย</h2>
     <p>ขอบคุณที่ร่วมตอบแบบสอบถาม ข้อมูลของคุณถูกบันทึกในระบบแล้ว</p>
-    <button type="button" class="btn-next" id="btnRestart" style="margin:0 auto;">ทำแบบสอบถามอีกครั้ง</button>
-  </div>
-
-  <div class="admin-link">
-    สำหรับผู้ดูแลระบบ · <a href="/login">เข้าสู่ระบบหลังบ้าน</a> · <a href="/dashboard">Dashboard</a>
+    <div class="gift">
+      <div class="gift-title">&#127873; ของขวัญสำหรับคุณ</div>
+      <div class="gift-sub">ดาวน์โหลด Marketing 7.0 Skill ไปใช้งานได้เลย</div>
+      <a class="btn-download" href="/marketing-70.skill" download="marketing-70.skill">
+        &#11015;&#65039; ดาวน์โหลด Marketing 7.0 Skill
+      </a>
+    </div>
+    <button type="button" class="btn-restart" id="btnRestart">ทำแบบสอบถามอีกครั้ง</button>
   </div>
 </div>
 
@@ -266,94 +301,106 @@
     { value: 'GenBeta',  label: 'Gen Beta',  desc: 'เกิดราว 2025 เป็นต้นไป' }
   ];
   const STRATEGIES = [
-    { value: 'ValueProposition',   label: 'Value Proposition',  desc: 'สื่อสารจุดเด่นและคุณค่าของสินค้า' },
-    { value: 'Brand Storytelling', label: 'Brand Storytelling', desc: 'สร้างการจดจำผ่านเรื่องราวของแบรนด์' },
-    { value: 'Selling Approach',   label: 'Selling Approach',   desc: 'เน้นเทคนิคและวิธีการปิดการขาย' },
-    { value: 'Customer Experience',label: 'Customer Experience',desc: 'มอบประสบการณ์ที่ดีให้ลูกค้า' }
+    { value: 'ValueProposition',    label: 'Value Proposition',   desc: 'สื่อสารจุดเด่นและคุณค่าของสินค้า' },
+    { value: 'Brand Storytelling',  label: 'Brand Storytelling',  desc: 'สร้างการจดจำผ่านเรื่องราวของแบรนด์' },
+    { value: 'Selling Approach',    label: 'Selling Approach',    desc: 'เน้นเทคนิคและวิธีการปิดการขาย' },
+    { value: 'Customer Experience', label: 'Customer Experience', desc: 'มอบประสบการณ์ที่ดีให้ลูกค้า' }
   ];
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const LETTERS = ['A', 'B', 'C', 'D', 'E'];
+  const TOTAL = 3;
 
   const answers = { email: '', audience: '', strategy: '' };
   let current = 0;
-  const TOTAL = 3;
+  let submitted = false;
+  let advanceTimer = null;
 
-  function buildOptions(containerId, items, key) {
+  // --- สร้างตัวเลือก ---
+  function buildChoices(containerId, items, key, stepIdx) {
     const wrap = document.getElementById(containerId);
-    items.forEach(it => {
-      const el = document.createElement('label');
-      el.className = 'opt';
-      el.innerHTML =
-        '<span class="dot"></span>' +
-        '<span class="opt-text"><strong>' + it.label + '</strong><small>' + it.desc + '</small></span>';
-      el.addEventListener('click', () => {
+    items.forEach((it, i) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'choice';
+      btn.innerHTML =
+        '<span class="key">' + LETTERS[i] + '</span>' +
+        '<span class="choice-text"><strong>' + it.label + '</strong>' +
+        '<small>' + it.desc + '</small></span>' +
+        '<span class="tick">&#10003;</span>';
+      btn.addEventListener('click', () => {
         answers[key] = it.value;
-        wrap.querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
-        el.classList.add('selected');
-        document.getElementById('err' + (key === 'audience' ? 1 : 2)).textContent = '';
+        wrap.querySelectorAll('.choice').forEach(c => c.classList.remove('selected'));
+        btn.classList.add('selected');
+        document.getElementById('err' + stepIdx).textContent = '';
+        clearTimeout(advanceTimer);
+        advanceTimer = setTimeout(next, 360);  // เลือกแล้วเลื่อนต่ออัตโนมัติ
       });
-      wrap.appendChild(el);
+      wrap.appendChild(btn);
     });
   }
-  buildOptions('audienceOpts', AUDIENCES, 'audience');
-  buildOptions('strategyOpts', STRATEGIES, 'strategy');
+  buildChoices('audienceOpts', AUDIENCES, 'audience', 1);
+  buildChoices('strategyOpts', STRATEGIES, 'strategy', 2);
 
   const steps = document.querySelectorAll('.step');
   const bar = document.getElementById('bar');
-  const stepLabel = document.getElementById('stepLabel');
-  const stepPct = document.getElementById('stepPct');
-  const btnBack = document.getElementById('btnBack');
-  const btnNext = document.getElementById('btnNext');
+  const navPrev = document.getElementById('navPrev');
+  const navNext = document.getElementById('navNext');
+  const emailInput = document.getElementById('email');
 
   function render() {
     steps.forEach(s => s.classList.toggle('active', +s.dataset.step === current));
-    const pct = Math.round(((current + 1) / TOTAL) * 100);
-    bar.style.width = pct + '%';
-    stepLabel.textContent = 'ข้อ ' + (current + 1) + ' จาก ' + TOTAL;
-    stepPct.textContent = pct + '%';
-    btnBack.disabled = current === 0;
-    btnNext.textContent = current === TOTAL - 1 ? 'ส่งแบบสอบถาม' : 'ถัดไป';
+    bar.style.width = Math.round(((current + 1) / TOTAL) * 100) + '%';
+    navPrev.disabled = current === 0;
+    if (current === 0) setTimeout(() => emailInput.focus(), 420);
+    else emailInput.blur();
   }
 
-  function validate() {
-    if (current === 0) {
-      answers.email = document.getElementById('email').value.trim();
-      if (!answers.email) {
-        document.getElementById('err0').textContent = 'กรุณากรอกอีเมล';
-        return false;
-      }
-      if (!EMAIL_RE.test(answers.email)) {
-        document.getElementById('err0').textContent = 'รูปแบบอีเมลไม่ถูกต้อง';
-        return false;
-      }
+  function validateStep(i) {
+    if (i === 0) {
+      answers.email = emailInput.value.trim();
+      if (!answers.email) { showErr(0, 'กรุณากรอกอีเมล'); return false; }
+      if (!EMAIL_RE.test(answers.email)) { showErr(0, 'รูปแบบอีเมลไม่ถูกต้อง'); return false; }
     }
-    if (current === 1 && !answers.audience) {
-      document.getElementById('err1').textContent = 'กรุณาเลือกกลุ่มเป้าหมาย';
-      return false;
-    }
-    if (current === 2 && !answers.strategy) {
-      document.getElementById('err2').textContent = 'กรุณาเลือกกลยุทธ์';
-      return false;
-    }
+    if (i === 1 && !answers.audience) { showErr(1, 'กรุณาเลือกกลุ่มเป้าหมาย'); return false; }
+    if (i === 2 && !answers.strategy) { showErr(2, 'กรุณาเลือกกลยุทธ์'); return false; }
     return true;
   }
+  function showErr(i, msg) { document.getElementById('err' + i).textContent = msg; }
 
-  btnBack.addEventListener('click', () => {
+  function next() {
+    clearTimeout(advanceTimer);
+    if (!validateStep(current)) return;
+    if (current < TOTAL - 1) { current++; render(); }
+    else submit();
+  }
+  function prev() {
+    clearTimeout(advanceTimer);
     if (current > 0) { current--; render(); }
-  });
+  }
 
-  btnNext.addEventListener('click', async () => {
-    if (!validate()) return;
-    if (current < TOTAL - 1) {
-      current++;
-      render();
-    } else {
-      await submit();
+  navNext.addEventListener('click', next);
+  navPrev.addEventListener('click', prev);
+  document.getElementById('okBtn').addEventListener('click', next);
+
+  // --- คีย์บอร์ด ---
+  document.addEventListener('keydown', (e) => {
+    if (submitted) return;
+    if (e.key === 'Enter') { e.preventDefault(); next(); return; }
+    if (current >= 1) {
+      const items = current === 1 ? AUDIENCES : STRATEGIES;
+      const idx = LETTERS.indexOf(e.key.toUpperCase());
+      if (idx >= 0 && idx < items.length) {
+        const wrap = document.getElementById(current === 1 ? 'audienceOpts' : 'strategyOpts');
+        wrap.children[idx].click();
+      }
     }
   });
 
   async function submit() {
-    btnNext.disabled = true;
-    btnNext.textContent = 'กำลังส่ง...';
+    if (submitted) return;
+    submitted = true;
+    const okBtn = document.getElementById('okBtn');
+    okBtn.disabled = true;
     try {
       const res = await fetch('/api/submit', {
         method: 'POST',
@@ -362,13 +409,11 @@
       });
       const data = await res.json();
       if (!res.ok || !data.ok) throw new Error(data.error || 'ส่งข้อมูลไม่สำเร็จ');
-      document.getElementById('form').style.display = 'none';
-      document.getElementById('progressWrap').style.display = 'none';
       document.getElementById('done').classList.add('active');
     } catch (e) {
-      document.getElementById('err2').textContent = e.message;
-      btnNext.disabled = false;
-      btnNext.textContent = 'ส่งแบบสอบถาม';
+      submitted = false;
+      okBtn.disabled = false;
+      showErr(2, e.message);
     }
   }
 
