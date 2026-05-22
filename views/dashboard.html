@@ -112,6 +112,22 @@
     width: 0; transition: width .5s ease;
   }
   .fill.alt { background: linear-gradient(90deg, #0ea5e9, var(--cyan)); box-shadow: 0 0 14px -2px rgba(34,211,238,.5); }
+
+  .gauge-num { font-size: 44px; font-weight: 800; line-height: 1; margin-bottom: 14px; }
+  .gauge-num .score {
+    background: linear-gradient(120deg, var(--accent-2), var(--cyan));
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .gauge-num em { font-size: 17px; font-style: normal; color: var(--muted); }
+  .gauge-track { background: var(--surface-2); height: 16px; border-radius: 99px; overflow: hidden; }
+  .gauge-fill {
+    height: 100%; width: 0; border-radius: 99px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    box-shadow: 0 0 14px -2px var(--glow);
+    transition: width .6s ease;
+  }
+  .gauge-fill.alt { background: linear-gradient(90deg, #0ea5e9, var(--cyan)); box-shadow: 0 0 14px -2px rgba(34,211,238,.5); }
+  .gauge-scale { display: flex; justify-content: space-between; font-size: 11.5px; color: var(--muted); margin-top: 8px; }
 </style>
 </head>
 <body>
@@ -144,6 +160,21 @@
     <div class="panel">
       <h2>จำแนกตามกลยุทธ์</h2>
       <div id="strChart"></div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h2>ความพึงพอใจเนื้อหา (คะแนนเฉลี่ย)</h2>
+      <div class="gauge-num"><span class="score" id="avgContent">0</span><em> / 10</em></div>
+      <div class="gauge-track"><div class="gauge-fill" id="avgContentFill"></div></div>
+      <div class="gauge-scale"><span>1</span><span>10</span></div>
+    </div>
+    <div class="panel">
+      <h2>ความพอใจในด้านสถานที่ (คะแนนเฉลี่ย)</h2>
+      <div class="gauge-num"><span class="score" id="avgVenue">0</span><em> / 10</em></div>
+      <div class="gauge-track"><div class="gauge-fill alt" id="avgVenueFill"></div></div>
+      <div class="gauge-scale"><span>1</span><span>10</span></div>
     </div>
   </div>
 </div>
@@ -197,6 +228,11 @@
     document.getElementById('cTotal').textContent = data.total;
     renderBars('audChart', data.byAudience, AUD_LABEL, false);
     renderBars('strChart', data.byStrategy, {}, true);
+
+    document.getElementById('avgContent').textContent = data.avgContent;
+    document.getElementById('avgVenue').textContent = data.avgVenue;
+    document.getElementById('avgContentFill').style.width = (data.avgContent / 10 * 100) + '%';
+    document.getElementById('avgVenueFill').style.width = (data.avgVenue / 10 * 100) + '%';
   }
 
   document.getElementById('btnLogout').addEventListener('click', async () => {

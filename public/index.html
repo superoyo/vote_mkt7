@@ -14,6 +14,7 @@
     --muted: #8a8aa0;
     --accent: #a855f7;
     --accent-2: #e879f9;
+    --cyan: #22d3ee;
     --glow: rgba(168, 85, 247, 0.5);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -120,6 +121,45 @@
   }
   .choice.selected .tick { opacity: 1; transform: none; }
 
+  /* สไลเดอร์ให้คะแนน */
+  .slider-box { margin-top: 4px; }
+  .slider-value {
+    font-size: 66px; font-weight: 800; line-height: 1; margin-bottom: 22px;
+  }
+  .slider-value span {
+    background: linear-gradient(120deg, var(--accent-2), var(--cyan));
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .slider-value em { font-size: 22px; font-style: normal; color: var(--muted); }
+  .slider-row { display: flex; align-items: center; gap: 16px; }
+  .slider-end { font-size: 15px; font-weight: 700; color: var(--muted); width: 22px; text-align: center; }
+  .slider {
+    -webkit-appearance: none; appearance: none;
+    flex: 1; height: 14px; border-radius: 99px;
+    background: var(--surface-2);
+    outline: none; cursor: pointer;
+  }
+  .slider::-webkit-slider-runnable-track { height: 14px; border-radius: 99px; }
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 30px; height: 30px; margin-top: -8px;
+    border-radius: 50%; background: #fff;
+    border: 4px solid var(--accent);
+    box-shadow: 0 0 18px var(--glow), 0 3px 8px rgba(0,0,0,.6);
+    cursor: pointer;
+  }
+  .slider::-moz-range-track { height: 14px; border-radius: 99px; background: transparent; }
+  .slider::-moz-range-thumb {
+    width: 26px; height: 26px; border-radius: 50%; background: #fff;
+    border: 4px solid var(--accent);
+    box-shadow: 0 0 18px var(--glow); cursor: pointer;
+  }
+  .slider:focus::-webkit-slider-thumb { border-color: var(--accent-2); }
+  .slider:focus::-moz-range-thumb { border-color: var(--accent-2); }
+  .slider-caption {
+    text-align: center; font-size: 12.5px; color: var(--muted); margin-top: 14px;
+  }
+
   /* ปุ่ม OK */
   .actions { display: flex; align-items: center; gap: 14px; margin-top: 28px; }
   .btn-ok {
@@ -216,6 +256,7 @@
   @media (max-width: 560px) {
     .qtitle { font-size: 23px; }
     .text-field { font-size: 22px; }
+    .slider-value { font-size: 52px; }
     .step { padding: 84px 22px; }
     .brand { left: 20px; }
     .foot-links { left: 20px; }
@@ -236,7 +277,7 @@
       <p class="qhint">เราจะใช้อีเมลนี้สำหรับติดต่อกลับ</p>
       <input type="email" id="email" class="text-field" placeholder="you@example.com" />
       <div class="actions">
-        <button type="button" class="btn-ok" id="okBtn">OK <span class="chk">&#10003;</span></button>
+        <button type="button" class="btn-ok">OK <span class="chk">&#10003;</span></button>
         <span class="enter-hint">หรือกด <kbd>Enter &crarr;</kbd></span>
       </div>
       <div class="err" id="err0"></div>
@@ -262,6 +303,52 @@
       <p class="qhint">เลือกแนวทางที่ตอบโจทย์ที่สุด &middot; กดปุ่ม A–D ได้</p>
       <div class="choices" id="strategyOpts"></div>
       <div class="err" id="err2"></div>
+    </div>
+  </section>
+
+  <!-- ข้อ 4 : ความพึงพอใจเนื้อหา -->
+  <section class="step" data-step="3">
+    <div class="step-inner">
+      <div class="qnum">4 <span class="arrow">&rarr;</span> ความพึงพอใจ</div>
+      <h1 class="qtitle">คุณพึงพอใจกับเนื้อหามากแค่ไหน?</h1>
+      <p class="qhint">เลื่อนปรับระดับ 1–10 &middot; ใช้ปุ่มลูกศร &larr;/&rarr; ได้</p>
+      <div class="slider-box">
+        <div class="slider-value"><span id="contentVal">5</span> <em>/ 10</em></div>
+        <div class="slider-row">
+          <span class="slider-end">1</span>
+          <input type="range" min="1" max="10" step="1" value="5" id="contentRating" class="slider" />
+          <span class="slider-end">10</span>
+        </div>
+        <div class="slider-caption">1 = น้อยที่สุด &nbsp;&middot;&nbsp; 10 = มากที่สุด</div>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn-ok">OK <span class="chk">&#10003;</span></button>
+        <span class="enter-hint">หรือกด <kbd>Enter &crarr;</kbd></span>
+      </div>
+      <div class="err" id="err3"></div>
+    </div>
+  </section>
+
+  <!-- ข้อ 5 : ความพอใจสถานที่ -->
+  <section class="step" data-step="4">
+    <div class="step-inner">
+      <div class="qnum">5 <span class="arrow">&rarr;</span> สถานที่</div>
+      <h1 class="qtitle">คุณพึงพอใจในด้านสถานที่มากแค่ไหน?</h1>
+      <p class="qhint">เลื่อนปรับระดับ 1–10 &middot; ใช้ปุ่มลูกศร &larr;/&rarr; ได้</p>
+      <div class="slider-box">
+        <div class="slider-value"><span id="venueVal">5</span> <em>/ 10</em></div>
+        <div class="slider-row">
+          <span class="slider-end">1</span>
+          <input type="range" min="1" max="10" step="1" value="5" id="venueRating" class="slider" />
+          <span class="slider-end">10</span>
+        </div>
+        <div class="slider-caption">1 = น้อยที่สุด &nbsp;&middot;&nbsp; 10 = มากที่สุด</div>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn-ok">ส่งแบบสอบถาม <span class="chk">&#10003;</span></button>
+        <span class="enter-hint">หรือกด <kbd>Enter &crarr;</kbd></span>
+      </div>
+      <div class="err" id="err4"></div>
     </div>
   </section>
 </main>
@@ -308,9 +395,9 @@
   ];
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const LETTERS = ['A', 'B', 'C', 'D', 'E'];
-  const TOTAL = 3;
+  const TOTAL = 5;
 
-  const answers = { email: '', audience: '', strategy: '' };
+  const answers = { email: '', audience: '', strategy: '', contentRating: 5, venueRating: 5 };
   let current = 0;
   let submitted = false;
   let advanceTimer = null;
@@ -341,6 +428,24 @@
   buildChoices('audienceOpts', AUDIENCES, 'audience', 1);
   buildChoices('strategyOpts', STRATEGIES, 'strategy', 2);
 
+  // --- สไลเดอร์ให้คะแนน ---
+  function setupSlider(sliderId, valId) {
+    const slider = document.getElementById(sliderId);
+    const valEl = document.getElementById(valId);
+    function update() {
+      valEl.textContent = slider.value;
+      const pct = ((slider.value - 1) / 9) * 100;
+      slider.style.background =
+        'linear-gradient(to right, #a855f7 0%, #e879f9 ' + pct + '%, ' +
+        '#1c1c2b ' + pct + '%, #1c1c2b 100%)';
+    }
+    slider.addEventListener('input', update);
+    update();
+    return slider;
+  }
+  const contentSlider = setupSlider('contentRating', 'contentVal');
+  const venueSlider = setupSlider('venueRating', 'venueVal');
+
   const steps = document.querySelectorAll('.step');
   const bar = document.getElementById('bar');
   const navPrev = document.getElementById('navPrev');
@@ -352,6 +457,8 @@
     bar.style.width = Math.round(((current + 1) / TOTAL) * 100) + '%';
     navPrev.disabled = current === 0;
     if (current === 0) setTimeout(() => emailInput.focus(), 420);
+    else if (current === 3) setTimeout(() => contentSlider.focus(), 420);
+    else if (current === 4) setTimeout(() => venueSlider.focus(), 420);
     else emailInput.blur();
   }
 
@@ -363,6 +470,8 @@
     }
     if (i === 1 && !answers.audience) { showErr(1, 'กรุณาเลือกกลุ่มเป้าหมาย'); return false; }
     if (i === 2 && !answers.strategy) { showErr(2, 'กรุณาเลือกกลยุทธ์'); return false; }
+    if (i === 3) answers.contentRating = +contentSlider.value;
+    if (i === 4) answers.venueRating = +venueSlider.value;
     return true;
   }
   function showErr(i, msg) { document.getElementById('err' + i).textContent = msg; }
@@ -380,13 +489,13 @@
 
   navNext.addEventListener('click', next);
   navPrev.addEventListener('click', prev);
-  document.getElementById('okBtn').addEventListener('click', next);
+  document.querySelectorAll('.btn-ok').forEach(b => b.addEventListener('click', next));
 
   // --- คีย์บอร์ด ---
   document.addEventListener('keydown', (e) => {
     if (submitted) return;
     if (e.key === 'Enter') { e.preventDefault(); next(); return; }
-    if (current >= 1) {
+    if (current === 1 || current === 2) {
       const items = current === 1 ? AUDIENCES : STRATEGIES;
       const idx = LETTERS.indexOf(e.key.toUpperCase());
       if (idx >= 0 && idx < items.length) {
@@ -399,8 +508,10 @@
   async function submit() {
     if (submitted) return;
     submitted = true;
-    const okBtn = document.getElementById('okBtn');
-    okBtn.disabled = true;
+    answers.contentRating = +contentSlider.value;
+    answers.venueRating = +venueSlider.value;
+    const okBtn = document.querySelector('.step.active .btn-ok');
+    if (okBtn) okBtn.disabled = true;
     try {
       const res = await fetch('/api/submit', {
         method: 'POST',
@@ -412,8 +523,8 @@
       document.getElementById('done').classList.add('active');
     } catch (e) {
       submitted = false;
-      okBtn.disabled = false;
-      showErr(2, e.message);
+      if (okBtn) okBtn.disabled = false;
+      showErr(4, e.message);
     }
   }
 

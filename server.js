@@ -33,6 +33,11 @@ const AUDIENCES = ['GenX', 'GenY', 'GenZ', 'GenAlpha', 'GenBeta'];
 const STRATEGIES = ['ValueProposition', 'Brand Storytelling', 'Selling Approach', 'Customer Experience'];
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+function validRating(v) {
+  const n = Number(v);
+  return Number.isInteger(n) && n >= 1 && n <= 10;
+}
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
@@ -53,7 +58,7 @@ function requireAuth(req, res, next) {
 
 // --- API: บันทึกแบบสอบถาม ---
 app.post('/api/submit', (req, res) => {
-  const { email, audience, strategy } = req.body || {};
+  const { email, audience, strategy, contentRating, venueRating } = req.body || {};
   if (!email || typeof email !== 'string' || !EMAIL_RE.test(email.trim())) {
     return res.status(400).json({ ok: false, error: 'กรุณากรอกอีเมลให้ถูกต้อง' });
   }
@@ -63,12 +68,20 @@ app.post('/api/submit', (req, res) => {
   if (!STRATEGIES.includes(strategy)) {
     return res.status(400).json({ ok: false, error: 'กรุณาเลือกกลยุทธ์' });
   }
+  if (!validRating(contentRating)) {
+    return res.status(400).json({ ok: false, error: 'กรุณาให้คะแนนความพึงพอใจเนื้อหา (1-10)' });
+  }
+  if (!validRating(venueRating)) {
+    return res.status(400).json({ ok: false, error: 'กรุณาให้คะแนนความพอใจสถานที่ (1-10)' });
+  }
   const list = readSubmissions();
   const entry = {
     id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
     email: email.trim().toLowerCase().slice(0, 200),
     audience,
     strategy,
+    contentRating: Number(contentRating),
+    venueRating: Number(venueRating),
     createdAt: new Date().toISOString()
   };
   list.push(entry);
@@ -98,15 +111,20 @@ app.get('/api/results', requireAuth, (req, res) => {
   const byStrategy = {};
   AUDIENCES.forEach(a => { byAudience[a] = 0; });
   STRATEGIES.forEach(s => { byStrategy[s] = 0; });
+  let sumContent = 0, sumVenue = 0;
   list.forEach(item => {
     if (byAudience[item.audience] !== undefined) byAudience[item.audience]++;
     if (byStrategy[item.strategy] !== undefined) byStrategy[item.strategy]++;
+    sumContent += Number(item.contentRating) || 0;
+    sumVenue += Number(item.venueRating) || 0;
   });
   res.json({
     ok: true,
     total: list.length,
     byAudience,
     byStrategy,
+    avgContent: list.length ? +(sumContent / list.length).toFixed(1) : 0,
+    avgVenue: list.length ? +(sumVenue / list.length).toFixed(1) : 0,
     submissions: list.slice().reverse()
   });
 });
